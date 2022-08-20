@@ -5,6 +5,10 @@ import {
   Image,
   ScrollView,
   TextInput,
+  TouchableOpacity,
+  SafeAreaView,
+  Platform,
+  StatusBar,
 } from "react-native";
 import React from "react";
 import { LinearGradient } from "expo-linear-gradient";
@@ -12,115 +16,130 @@ import { Ionicons, AntDesign } from "@expo/vector-icons";
 import { profilePics } from "../img/profiles/index.js";
 import ResponsiveImageView from "react-native-responsive-image-view";
 
-function Details() {
+function Details({ navigation: { goBack }  }) {
   return (
-    <LinearGradient
-      location={[0.35, 1.05, 0.1]}
-      start={{ x: 1, y: 0 }}
-      end={{ x: 1, y: 1 }}
-      colors={["#353B78", "#0D0F1D"]}
-      style={{ flex: 1 }}
-    >
-      <View style={styles.container}>
-        <View style={styles.header}>
-          <Ionicons name="ios-chevron-back" style={styles.back} size={27} />
-          <Text style={styles.headerTitle}>Details</Text>
-          <Ionicons name="bookmark-sharp" style={styles.back} size={34} />
+    <SafeAreaView style={styles.AndroidSafeArea}>
+      <LinearGradient
+        location={[0.35, 1.05, 0.1]}
+        start={{ x: 1, y: 0 }}
+        end={{ x: 1, y: 1 }}
+        colors={["#353B78", "#0D0F1D"]}
+        style={{ flex: 1 }}
+      >
+        <View style={styles.container}>
+          <View style={styles.header}>
+            <TouchableOpacity onPress={() => goBack()}>
+              <Ionicons name="ios-chevron-back" style={styles.back} size={27} />
+            </TouchableOpacity>
+            <Text style={styles.headerTitle}>Details</Text>
+            <Ionicons name="bookmark-sharp" style={styles.back} size={34} />
+          </View>
+          <ScrollView>
+            <View style={styles.outerImgContainer}>
+              <View style={styles.imgContainer}>
+                <View style={styles.addContainer}>
+                  <Ionicons
+                    name="arrow-down-circle"
+                    size={50}
+                    style={styles.add}
+                  />
+                </View>
+                <View style={styles.shadow}>
+                  <ResponsiveImageView
+                    source={require("../img/posts/wall.jpg")}
+                  >
+                    {({ getViewProps, getImageProps }) => (
+                      <View {...getViewProps()}>
+                        <Image
+                          {...getImageProps({ style: styles.postImage })}
+                        />
+                      </View>
+                    )}
+                  </ResponsiveImageView>
+                </View>
+              </View>
+            </View>
+            <View style={styles.descriptionOuterContainer}>
+              <View style={styles.descriptionContainer}>
+                <Text style={styles.descriptionTitle}>
+                  Modern Studio Design
+                </Text>
+                <Text style={styles.descriptionBody}>
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
+                  do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                  Ut enim ad minim veniam, quis nostrud exercitation ullamcoo
+                </Text>
+                <View style={styles.userContainer}>
+                  <Image
+                    style={styles.owner}
+                    resizeMode="contain"
+                    source={profilePics.avatars[5]}
+                  />
+                  <View style={styles.ownerTextContainer}>
+                    <Text style={styles.ownerText}>Dave Johson</Text>
+                  </View>
+                </View>
+              </View>
+            </View>
+            <View style={styles.descriptionOuterContainer}>
+              <View style={styles.descriptionContainer}>
+                <View style={styles.userContainer}>
+                  <Image
+                    style={styles.owner}
+                    resizeMode="contain"
+                    source={profilePics.avatars[14]}
+                  />
+                  <View style={styles.ownerTextContainer}>
+                    <Text style={styles.ownerText}>Dave Johson</Text>
+                  </View>
+                </View>
+                <Text style={styles.comment}>
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit
+                </Text>
+              </View>
+            </View>
+            <View style={styles.descriptionOuterContainer}>
+              <View style={styles.descriptionContainer}>
+                <View style={styles.userContainer}>
+                  <Image
+                    style={styles.owner}
+                    resizeMode="contain"
+                    source={profilePics.avatars[14]}
+                  />
+                  <View style={styles.ownerTextContainer}>
+                    <Text style={styles.ownerText}>Dave Johson</Text>
+                  </View>
+                </View>
+                <Text style={styles.comment}>
+                  Lorem ipsum dolor sit amet,6r6 gg g g g consectetur adipiscing
+                  elit
+                </Text>
+              </View>
+            </View>
+          </ScrollView>
+          <View style={styles.outerFooterContainer}>
+            <View style={styles.footerContainer}>
+              <TextInput
+                placeholderTextColor={"white"}
+                style={styles.input}
+                placeholder="Write a comment.."
+              />
+              <View style={styles.uploadContainer}>
+                <AntDesign name="upcircle" style={styles.upload} size={35} />
+              </View>
+            </View>
+          </View>
         </View>
-        <ScrollView>
-          <View style={styles.outerImgContainer}>
-            <View style={styles.imgContainer}>
-              <View style={styles.addContainer}>
-                <Ionicons
-                  name="arrow-down-circle"
-                  size={50}
-                  style={styles.add}
-                />
-              </View>
-              <View style={styles.shadow}>
-                <ResponsiveImageView source={require("../img/posts/wall.jpg")}>
-                  {({ getViewProps, getImageProps }) => (
-                    <View {...getViewProps()}>
-                      <Image {...getImageProps({ style: styles.postImage })} />
-                    </View>
-                  )}
-                </ResponsiveImageView>
-              </View>
-            </View>
-          </View>
-          <View style={styles.descriptionOuterContainer}>
-            <View style={styles.descriptionContainer}>
-              <Text style={styles.descriptionTitle}>Modern Studio Design</Text>
-              <Text style={styles.descriptionBody}>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-                enim ad minim veniam, quis nostrud exercitation ullamcoo
-              </Text>
-              <View style={styles.userContainer}>
-                <Image
-                  style={styles.owner}
-                  resizeMode="contain"
-                  source={profilePics.avatars[5]}
-                />
-                <View style={styles.ownerTextContainer}>
-                  <Text style={styles.ownerText}>Dave Johson</Text>
-                </View>
-              </View>
-            </View>
-          </View>
-          <View style={styles.descriptionOuterContainer}>
-            <View style={styles.descriptionContainer}>
-              <View style={styles.userContainer}>
-                <Image
-                  style={styles.owner}
-                  resizeMode="contain"
-                  source={profilePics.avatars[14]}
-                />
-                <View style={styles.ownerTextContainer}>
-                  <Text style={styles.ownerText}>Dave Johson</Text>
-                </View>
-              </View>
-              <Text style={styles.comment}>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit
-              </Text>
-            </View>
-          </View>
-          <View style={styles.descriptionOuterContainer}>
-            <View style={styles.descriptionContainer}>
-              <View style={styles.userContainer}>
-                <Image
-                  style={styles.owner}
-                  resizeMode="contain"
-                  source={profilePics.avatars[14]}
-                />
-                <View style={styles.ownerTextContainer}>
-                  <Text style={styles.ownerText}>Dave Johson</Text>
-                </View>
-              </View>
-              <Text style={styles.comment}>
-                Lorem ipsum dolor sit amet,6r6 gg g g g consectetur adipiscing
-                elit
-              </Text>
-            </View>
-          </View>
-        </ScrollView>
-        <View style={styles.outerFooterContainer}>
-          <View style={styles.footerContainer}>
-            <TextInput
-              placeholderTextColor={"white"}
-              style={styles.input}
-              placeholder="Write a comment.."
-            />
-            <View style={styles.uploadContainer}>
-              <AntDesign name="upcircle" style={styles.upload} size={35} />
-            </View>
-          </View>
-        </View>
-      </View>
-    </LinearGradient>
+      </LinearGradient>
+    </SafeAreaView>
   );
 }
 const styles = StyleSheet.create({
+  AndroidSafeArea: {
+    flex: 1,
+    backgroundColor: "#4952A5",
+    paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
+  },
   uploadContainer: {
     flexDirection: "row",
     justifyContent: "flex-end",

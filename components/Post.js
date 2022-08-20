@@ -1,22 +1,27 @@
-import { StyleSheet, Text, View, Image } from "react-native";
+import { StyleSheet, Text, View, Image, TouchableOpacity } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import React from "react";
 import { profilePics } from "../img/profiles/index.js";
 import ResponsiveImageView from "react-native-responsive-image-view";
 
-function Post() {
+function Post({ navigation }) {
+  function toDetails() {
+    navigation.navigate("Details");
+  }
   return (
     <View style={styles.postBox}>
       <View style={styles.bookMarkContainer}>
         <Ionicons name="bookmarks-sharp" size={25} style={styles.bookMark} />
       </View>
-      <ResponsiveImageView source={require("../img/posts/light.jpg")}>
-        {({ getViewProps, getImageProps }) => (
-          <View {...getViewProps()}>
-            <Image {...getImageProps({ style: styles.postImage })} />
-          </View>
-        )}
-      </ResponsiveImageView>
+      <TouchableOpacity onPress={toDetails}>
+        <ResponsiveImageView source={require("../img/posts/leb.gif")}>
+          {({ getViewProps, getImageProps }) => (
+            <View {...getViewProps()}>
+              <Image {...getImageProps({ style: styles.postImage })} />
+            </View>
+          )}
+        </ResponsiveImageView>
+      </TouchableOpacity>
       <View style={styles.userContainer}>
         <Image
           style={styles.owner}

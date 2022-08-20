@@ -5,15 +5,19 @@ import {
   Image,
   ScrollView,
   TextInput,
+  SafeAreaView,
+  Platform,
+  StatusBar,
+  TouchableOpacity,
 } from "react-native";
 import React, { useState } from "react";
 import { LinearGradient } from "expo-linear-gradient";
-import {Ionicons, MaterialIcons } from "@expo/vector-icons";
+import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import { profilePics } from "../img/profiles/index.js";
 import ResponsiveImageView from "react-native-responsive-image-view";
 import DropDownPicker from "react-native-dropdown-picker";
 
-function Upload() {
+function Upload({ navigation: { goBack, navigate } }) {
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState(null);
   const [items, setItems] = useState([
@@ -26,104 +30,123 @@ function Upload() {
 
   DropDownPicker.setListMode("SCROLLVIEW");
 
+  function toProfile() {
+    navigate("Profile");
+  }
+
   return (
-    <LinearGradient
-      location={[0.35, 1.05, 0.1]}
-      start={{ x: 1, y: 0 }}
-      end={{ x: 1, y: 1 }}
-      colors={["#353B78", "#0D0F1D"]}
-      style={{ flex: 1 }}
-    >
-      <View style={styles.container}>
-        <View style={styles.header}>
-          <Ionicons name="ios-chevron-back" style={styles.back} size={27} />
-          <Text style={styles.headerTitle}>Upload</Text>
-          <MaterialIcons name="cancel" size={32} style={styles.exit} />
-        </View>
-        <ScrollView>
-          <View style={styles.outerImgContainer}>
-            <View style={styles.imgContainer}>
-              <View style={styles.shadow}>
-                <ResponsiveImageView source={require("../img/posts/water.jpg")}>
-                  {({ getViewProps, getImageProps }) => (
-                    <View {...getViewProps()}>
-                      <Image {...getImageProps({ style: styles.postImage })} />
-                    </View>
-                  )}
-                </ResponsiveImageView>
+    <SafeAreaView style={styles.AndroidSafeArea}>
+      <LinearGradient
+        location={[0.35, 1.05, 0.1]}
+        start={{ x: 1, y: 0 }}
+        end={{ x: 1, y: 1 }}
+        colors={["#353B78", "#0D0F1D"]}
+        style={{ flex: 1 }}
+      >
+        <View style={styles.container}>
+          <View style={styles.header}>
+            <TouchableOpacity onPress={() => goBack()}>
+              <Ionicons name="ios-chevron-back" style={styles.back} size={27} />
+            </TouchableOpacity>
+            <Text style={styles.headerTitle}>Upload</Text>
+            <TouchableOpacity onPress={toProfile}>
+              <MaterialIcons name="cancel" size={32} style={styles.exit} />
+            </TouchableOpacity>
+          </View>
+          <ScrollView>
+            <View style={styles.outerImgContainer}>
+              <View style={styles.imgContainer}>
+                <View style={styles.shadow}>
+                  <ResponsiveImageView
+                    source={require("../img/posts/water.jpg")}
+                  >
+                    {({ getViewProps, getImageProps }) => (
+                      <View {...getViewProps()}>
+                        <Image
+                          {...getImageProps({ style: styles.postImage })}
+                        />
+                      </View>
+                    )}
+                  </ResponsiveImageView>
+                </View>
               </View>
             </View>
-          </View>
-          <View style={styles.uploadOuterContainer}>
-            <View style={styles.userContainer}>
-              <Image
-                style={styles.owner}
-                resizeMode="contain"
-                source={profilePics.avatars[2]}
+            <View style={styles.uploadOuterContainer}>
+              <View style={styles.userContainer}>
+                <Image
+                  style={styles.owner}
+                  resizeMode="contain"
+                  source={profilePics.avatars[2]}
+                />
+                <View style={styles.ownerTextContainer}>
+                  <Text style={styles.ownerText}>Dave Johnson</Text>
+                </View>
+              </View>
+            </View>
+            <View style={styles.uploadOuterContainer}>
+              <View style={styles.uploadContainer}>
+                <Text style={styles.uploadButton}>SELECT FILE</Text>
+              </View>
+            </View>
+            <View style={styles.uploadOuterContainer}>
+              <TextInput
+                style={styles.inputTitle}
+                placeholderTextColor={"white"}
+                placeholder="Add a title..."
               />
-              <View style={styles.ownerTextContainer}>
-                <Text style={styles.ownerText}>Dave Johnson</Text>
+            </View>
+            <View style={styles.uploadOuterContainer}>
+              <TextInput
+                style={styles.inputTitle}
+                placeholderTextColor={"white"}
+                placeholder="Add a description..."
+              />
+            </View>
+            <DropDownPicker
+              containerStyle={{
+                flexDirection: "row",
+                justifyContent: "center",
+                marginTop: 20,
+              }}
+              style={{
+                backgroundColor: "#303671",
+                width: "85%",
+              }}
+              textStyle={{
+                color: "white",
+                backgroundColor: "#303671",
+              }}
+              dropDownContainerStyle={{
+                backgroundColor: "#303671",
+                width: "85%",
+              }}
+              placeholder="Select a catagory"
+              open={open}
+              value={value}
+              items={items}
+              setOpen={setOpen}
+              setValue={setValue}
+              dropDownDirection="TOP"
+              setItems={setItems}
+            />
+            <View style={styles.uploadOuterContainer}>
+              <View style={styles.sendButton}>
+                <Text style={styles.uploadText}>Upload</Text>
               </View>
             </View>
-          </View>
-          <View style={styles.uploadOuterContainer}>
-            <View style={styles.uploadContainer}>
-              <Text style={styles.uploadButton}>SELECT FILE</Text>
-            </View>
-          </View>
-          <View style={styles.uploadOuterContainer}>
-            <TextInput
-              style={styles.inputTitle}
-              placeholderTextColor={"white"}
-              placeholder="Add a title..."
-            />
-          </View>
-          <View style={styles.uploadOuterContainer}>
-            <TextInput
-              style={styles.inputTitle}
-              placeholderTextColor={"white"}
-              placeholder="Add a description..."
-            />
-          </View>
-          <DropDownPicker
-            containerStyle={{
-              flexDirection: "row",
-              justifyContent: "center",
-              marginTop: 20,
-            }}
-            style={{
-              backgroundColor: "#303671",
-              width: "85%",
-            }}
-            textStyle={{
-              color: "white",
-              backgroundColor: "#303671",
-            }}
-            dropDownContainerStyle={{
-              backgroundColor: "#303671",
-              width: "85%",
-            }}
-            placeholder="Select a catagory"
-            open={open}
-            value={value}
-            items={items}
-            setOpen={setOpen}
-            setValue={setValue}
-            dropDownDirection="TOP"
-            setItems={setItems}
-          />
-          <View style={styles.uploadOuterContainer}>
-            <View style={styles.sendButton}>
-              <Text style={styles.uploadText}>Upload</Text>
-            </View>
-          </View>
-        </ScrollView>
-      </View>
-    </LinearGradient>
+          </ScrollView>
+        </View>
+      </LinearGradient>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
+  AndroidSafeArea: {
+    flex: 1,
+    backgroundColor: "#4952A5",
+    paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
+  },
   userContainer: {
     marginTop: 10,
     flexDirection: "row",
@@ -175,8 +198,7 @@ const styles = StyleSheet.create({
 
     elevation: 108,
     marginTop: 10,
-    marginBottom: 20
-
+    marginBottom: 20,
   },
 
   inputTitle: {
@@ -267,7 +289,7 @@ const styles = StyleSheet.create({
     // borderWidth: 2,
     flexDirection: "row",
     justifyContent: "center",
-    marginBottom: -10
+    marginBottom: -10,
   },
   container: {
     flex: 1,

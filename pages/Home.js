@@ -6,6 +6,10 @@ import {
   ScrollView,
   TextInput,
   Image,
+  SafeAreaView,
+  Platform,
+  StatusBar,
+  TouchableOpacity,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { Ionicons } from "@expo/vector-icons";
@@ -13,79 +17,96 @@ import { profilePics } from "../img/profiles/index.js";
 import ResponsiveImageView from "react-native-responsive-image-view";
 import Post from "../components/Post";
 
-function Home() {
+function Home({ navigation }) {
+  function toProfile() {
+    navigation.navigate("Profile");
+  }
+
+
   return (
-    <LinearGradient
-      location={[0.35, 1.05, 0.1]}
-      start={{ x: 1, y: 0 }}
-      end={{ x: 1, y: 1 }}
-      colors={["#353B78", "#0D0F1D"]}
-      style={styles.container}
-    >
-      <View style={styles.home}>
-        <View style={styles.header}>
-          <View style={styles.inputContainer}>
-            <TextInput
-              style={styles.input}
-              placeholderTextColor={"white"}
-              placeholder="Search"
-            />
-            <Ionicons
-              style={styles.searchIcon}
-              name="ios-search"
-              size={23}
-              color="#E9E9E9"
-            />
+    <SafeAreaView style={styles.AndroidSafeArea}>
+      <LinearGradient
+        location={[0.35, 1.05, 0.1]}
+        start={{ x: 1, y: 0 }}
+        end={{ x: 1, y: 1 }}
+        colors={["#353B78", "#0D0F1D"]}
+        style={styles.container}
+      >
+        <View style={styles.home}>
+          <View style={styles.header}>
+            <View style={styles.inputContainer}>
+              <TextInput
+                style={styles.input}
+                placeholderTextColor={"white"}
+                placeholder="Search"
+              />
+              <Ionicons
+                style={styles.searchIcon}
+                name="ios-search"
+                size={23}
+                color="#E9E9E9"
+              />
+            </View>
+            <View style={styles.profileContainer}>
+              <TouchableOpacity onPress={toProfile}>
+                <Image
+                  style={styles.profile}
+                  resizeMode="contain"
+                  source={profilePics.avatars[20]}
+                />
+              </TouchableOpacity>
+            </View>
           </View>
-          <View style={styles.profileContainer}>
-            <Image
-              style={styles.profile}
-              resizeMode="contain"
-              source={profilePics.avatars[20]}
-            />
-          </View>
-        </View>
-        <ScrollView style={{marginBottom: 100}} showsVerticalScrollIndicator={false}>
           <ScrollView
-            showsHorizontalScrollIndicator={false}
-            horizontal={true}
-            style={styles.catagorieContainer}
+            style={{ marginBottom: 100 }}
+            showsVerticalScrollIndicator={false}
           >
-            <View style={styles.catagories}>
-              <Text style={{ color: "#E9E9E9" }}>Wallpaju0per</Text>
-            </View>
-            <View style={styles.catagories}>
-              <Text style={{ color: "#E9E9E9" }}>Wallpaper</Text>
-            </View>
-            <View style={styles.catagories}>
-              <Text style={{ color: "#E9E9E9" }}>Wallpaper</Text>
-            </View>
-            <View style={styles.catagories}>
-              <Text style={{ color: "#E9E9E9" }}>Wallpaper</Text>
-            </View>
-            <View style={styles.catagories}>
-              <Text style={{ color: "#E9E9E9" }}>Wallpaper</Text>
+            <ScrollView
+              showsHorizontalScrollIndicator={false}
+              horizontal={true}
+              style={styles.catagorieContainer}
+            >
+              <View style={styles.catagories}>
+                <Text style={{ color: "#E9E9E9" }}>Wallpaju0per</Text>
+              </View>
+              <View style={styles.catagories}>
+                <Text style={{ color: "#E9E9E9" }}>Wallpaper</Text>
+              </View>
+              <View style={styles.catagories}>
+                <Text style={{ color: "#E9E9E9" }}>Wallpaper</Text>
+              </View>
+              <View style={styles.catagories}>
+                <Text style={{ color: "#E9E9E9" }}>Wallpaper</Text>
+              </View>
+              <View style={styles.catagories}>
+                <Text style={{ color: "#E9E9E9" }}>Wallpaper</Text>
+              </View>
+            </ScrollView>
+            <View style={styles.gridContainer}>
+              <View style={styles.gridLeft}>
+                <Post navigation={navigation} />
+                <Post />
+                <Post />
+              </View>
+              <View style={styles.gridRight}>
+                <Post />
+                <Post />
+                <Post />
+              </View>
             </View>
           </ScrollView>
-          <View style={styles.gridContainer}>
-            <View style={styles.gridLeft}>
-              <Post />
-              <Post />
-              <Post />
-            </View>
-            <View style={styles.gridRight}>
-              <Post />
-              <Post />
-              <Post />
-            </View>
-          </View>
-        </ScrollView>
-      </View>
-    </LinearGradient>
+        </View>
+      </LinearGradient>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
+  AndroidSafeArea: {
+    flex: 1,
+    backgroundColor: "#4952A5",
+    paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
+  },
   container: {
     flex: 1,
     // border: "5px solid green",
@@ -101,7 +122,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     marginLeft: 22,
     marginRight: 22,
-    marginTop: 15,
+    marginTop: 20,
   },
 
   inputContainer: {

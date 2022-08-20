@@ -5,6 +5,10 @@ import {
   Image,
   ScrollView,
   TextInput,
+  SafeAreaView,
+  Platform,
+  StatusBar,
+  TouchableOpacity,
 } from "react-native";
 import React from "react";
 import { LinearGradient } from "expo-linear-gradient";
@@ -13,95 +17,113 @@ import { profilePics } from "../img/profiles/index.js";
 import ResponsiveImageView from "react-native-responsive-image-view";
 import Post from "../components/Post";
 
-function Profile() {
+function Profile({ navigation: { goBack, navigate }  }) {
+    function signout() {
+      navigate("Login");
+    }
+
+    
   return (
-    <LinearGradient
-      location={[0.35, 1.05, 0.1]}
-      start={{ x: 1, y: 0 }}
-      end={{ x: 1, y: 1 }}
-      colors={["#353B78", "#0D0F1D"]}
-      style={{ flex: 1 }}
-    >
-      <View style={styles.container}>
-        <View style={styles.header}>
-          <Ionicons name="ios-chevron-back" style={styles.back} size={27} />
-          <Text style={styles.headerTitle}>Profile</Text>
-          <Ionicons name="exit" size={34} style={styles.exit} />
+    <SafeAreaView style={styles.AndroidSafeArea}>
+      <LinearGradient
+        location={[0.35, 1.05, 0.1]}
+        start={{ x: 1, y: 0 }}
+        end={{ x: 1, y: 1 }}
+        colors={["#353B78", "#0D0F1D"]}
+        style={{ flex: 1 }}
+      >
+        <View style={styles.container}>
+          <View style={styles.header}>
+            <TouchableOpacity onPress={() => goBack()}>
+              <Ionicons name="ios-chevron-back" style={styles.back} size={27} />
+            </TouchableOpacity>
+            <Text style={styles.headerTitle}>Profile</Text>
+            <TouchableOpacity onPress={signout}>
+              <Ionicons name="exit" size={34} style={styles.exit} />
+            </TouchableOpacity>
+          </View>
+          <ScrollView>
+            <View style={styles.imgContainer}>
+              <View style={styles.profileContainer}>
+                <Image
+                  style={styles.profile}
+                  resizeMode="contain"
+                  source={profilePics.avatars[20]}
+                />
+              </View>
+            </View>
+            <View
+              style={{
+                flexDirection: "row",
+                justifyContent: "center",
+                marginTop: 20,
+              }}
+            >
+              <Text style={styles.profileName}>Steve Anderson</Text>
+            </View>
+            <View
+              style={{
+                flexDirection: "row",
+                justifyContent: "center",
+                marginTop: 10,
+                // borderWidth: 2,
+                paddingBottom: 15,
+                marginBottom: -10,
+              }}
+            >
+              <View style={styles.catagories}>
+                <Text
+                  style={{
+                    color: "#E9E9E9",
+                    letterSpacing: 1,
+                    textAlign: "center",
+                  }}
+                >
+                  Created
+                </Text>
+              </View>
+              <View style={styles.catagories}>
+                <Text
+                  style={{
+                    color: "#E9E9E9",
+                    letterSpacing: 1,
+                    textAlign: "center",
+                  }}
+                >
+                  Saved
+                </Text>
+              </View>
+            </View>
+            <View style={styles.gridContainer}>
+              <View style={styles.gridLeft}>
+                <Post />
+                <Post />
+                <Post />
+              </View>
+              <View style={styles.gridRight}>
+                <Post />
+                <Post />
+                <Post />
+              </View>
+            </View>
+            <View></View>
+          </ScrollView>
+          <View style={styles.addContainer}>
+            <TouchableOpacity onPress={() => navigate("Upload")}>
+              <Ionicons name="add-circle" style={styles.add} size={63} />
+            </TouchableOpacity>
+          </View>
         </View>
-        <ScrollView>
-          <View style={styles.imgContainer}>
-            <View style={styles.profileContainer}>
-              <Image
-                style={styles.profile}
-                resizeMode="contain"
-                source={profilePics.avatars[20]}
-              />
-            </View>
-          </View>
-          <View
-            style={{
-              flexDirection: "row",
-              justifyContent: "center",
-              marginTop: 20,
-            }}
-          >
-            <Text style={styles.profileName}>Steve Anderson</Text>
-          </View>
-          <View
-            style={{
-              flexDirection: "row",
-              justifyContent: "center",
-              marginTop: 10,
-              // borderWidth: 2,
-              paddingBottom: 15,
-              marginBottom: -10,
-            }}
-          >
-            <View style={styles.catagories}>
-              <Text
-                style={{
-                  color: "#E9E9E9",
-                  letterSpacing: 1,
-                  textAlign: "center",
-                }}
-              >
-                Created
-              </Text>
-            </View>
-            <View style={styles.catagories}>
-              <Text
-                style={{
-                  color: "#E9E9E9",
-                  letterSpacing: 1,
-                  textAlign: "center",
-                }}
-              >
-                Saved
-              </Text>
-            </View>
-          </View>
-          <View style={styles.gridContainer}>
-            <View style={styles.gridLeft}>
-              <Post />
-              <Post />
-              <Post />
-            </View>
-            <View style={styles.gridRight}>
-              <Post />
-              <Post />
-              <Post />
-            </View>
-          </View>
-          <View></View>
-        </ScrollView>
-        <View style={styles.addContainer}>
-          <Ionicons name="add-circle" style={styles.add} size={63} />
-        </View>
-      </View>
-    </LinearGradient>
+      </LinearGradient>
+    </SafeAreaView>
   );
 }
 const styles = StyleSheet.create({
+  AndroidSafeArea: {
+    flex: 1,
+    backgroundColor: "#4952A5",
+    paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
+  },
   add: {
     color: "#25CAAC",
     // borderWidth: 2
