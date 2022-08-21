@@ -87,8 +87,14 @@ function Home({ navigation }) {
                 <Post navigation={navigation} />
                 <Post />
                 <Post />
+                <Post />
+                <Post />
+                <Post />
               </View>
               <View style={styles.gridRight}>
+                <Post />
+                <Post />
+                <Post />
                 <Post />
                 <Post />
                 <Post />
@@ -122,7 +128,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     marginLeft: 22,
     marginRight: 22,
-    marginTop: 20,
+    marginTop: 15,
   },
 
   inputContainer: {
@@ -173,7 +179,7 @@ const styles = StyleSheet.create({
 
   catagorieContainer: {
     // border: "1px solid orange",
-    marginTop: 4,
+    marginTop: 0,
   },
 
   catagories: {

@@ -14,7 +14,7 @@ function Post({ navigation }) {
         <Ionicons name="bookmarks-sharp" size={25} style={styles.bookMark} />
       </View>
       <TouchableOpacity onPress={toDetails}>
-        <ResponsiveImageView source={require("../img/posts/leb.gif")}>
+        <ResponsiveImageView source={require("../img/posts/wall.jpg")}>
           {({ getViewProps, getImageProps }) => (
             <View {...getViewProps()}>
               <Image {...getImageProps({ style: styles.postImage })} />
@@ -71,22 +71,25 @@ const styles = StyleSheet.create({
   },
 
   owner: {
-    height: 40,
-    width: 40,
+    height: 35,
+    width: 35,
     borderRadius: 100,
-    marginLeft: 5,
+    marginLeft: 0,
   },
 
   ownerTextContainer: {
     width: 100,
-    marginLeft: 13,
+    marginLeft: 8,
   },
 
   ownerText: {
-    color: "#E9E9E9",
+    color: "white",
     position: "relative",
     top: 9,
     fontSize: 14,
+    opacity: 0.9,
+    fontWeight: "300",
+    letterSpacing: 0.65
   },
 });
 

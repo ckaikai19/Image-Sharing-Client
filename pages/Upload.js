@@ -16,8 +16,11 @@ import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import { profilePics } from "../img/profiles/index.js";
 import ResponsiveImageView from "react-native-responsive-image-view";
 import DropDownPicker from "react-native-dropdown-picker";
+import * as ImagePicker from "expo-image-picker";
+import axios from "axios";
 
 function Upload({ navigation: { goBack, navigate } }) {
+  const [image, setImage] = useState(null);
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState(null);
   const [items, setItems] = useState([
@@ -27,6 +30,51 @@ function Upload({ navigation: { goBack, navigate } }) {
     { label: "App Design", value: "app design" },
     { label: "Decor", value: "Decor" },
   ]);
+
+  const pickImage = async () => {
+    try {
+      let result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.All,
+        allowsEditing: true,
+        // aspect: [4, 3],
+        quality: 1,
+      });
+      setImage(result.uri);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const sendImage = async () => {
+    const formData = new FormData();
+    formData.append("file", {
+      name: new Date() + "_img",
+      uri: image,
+      type: "image/jpg",
+    });
+
+    try {
+      const res = await axios.post("http://10.0.0.2:3001/upload", formData)
+                             .then(res => console.log(res))
+                             .catch(err => console.log(err));
+      // {
+      //   headers: {
+      //     "Content-Type": "multipart/form-data",
+      //   },
+      // }
+
+      // const { fileName, filePath } = res.data;
+
+      // console.log(fileName);
+      // console.log(filePath);
+      return res;
+
+
+    } catch (err) {
+      console.log(err);
+    }
+
+  };
 
   DropDownPicker.setListMode("SCROLLVIEW");
 
@@ -54,23 +102,26 @@ function Upload({ navigation: { goBack, navigate } }) {
             </TouchableOpacity>
           </View>
           <ScrollView>
-            <View style={styles.outerImgContainer}>
-              <View style={styles.imgContainer}>
-                <View style={styles.shadow}>
-                  <ResponsiveImageView
-                    source={require("../img/posts/water.jpg")}
-                  >
-                    {({ getViewProps, getImageProps }) => (
-                      <View {...getViewProps()}>
-                        <Image
-                          {...getImageProps({ style: styles.postImage })}
-                        />
-                      </View>
-                    )}
-                  </ResponsiveImageView>
+            {image ? (
+              <View style={styles.outerImgContainer}>
+                <View style={styles.imgContainer}>
+                  <View style={styles.shadow}>
+                    <ResponsiveImageView source={{ uri: image }}>
+                      {({ getViewProps, getImageProps }) => (
+                        <View {...getViewProps()}>
+                          <Image
+                            {...getImageProps({ style: styles.postImage })}
+                          />
+                        </View>
+                      )}
+                    </ResponsiveImageView>
+                  </View>
                 </View>
               </View>
-            </View>
+            ) : (
+              <View></View>
+            )}
+
             <View style={styles.uploadOuterContainer}>
               <View style={styles.userContainer}>
                 <Image
@@ -85,7 +136,9 @@ function Upload({ navigation: { goBack, navigate } }) {
             </View>
             <View style={styles.uploadOuterContainer}>
               <View style={styles.uploadContainer}>
-                <Text style={styles.uploadButton}>SELECT FILE</Text>
+                <TouchableOpacity onPress={pickImage}>
+                  <Text style={styles.uploadButton}>SELECT FILE</Text>
+                </TouchableOpacity>
               </View>
             </View>
             <View style={styles.uploadOuterContainer}>
@@ -130,9 +183,11 @@ function Upload({ navigation: { goBack, navigate } }) {
               setItems={setItems}
             />
             <View style={styles.uploadOuterContainer}>
-              <View style={styles.sendButton}>
-                <Text style={styles.uploadText}>Upload</Text>
-              </View>
+              <TouchableOpacity style={{ width: "85%" }} onPress={sendImage}>
+                <View style={styles.sendButton}>
+                  <Text style={styles.uploadText}>Upload</Text>
+                </View>
+              </TouchableOpacity>
             </View>
           </ScrollView>
         </View>
@@ -183,7 +238,7 @@ const styles = StyleSheet.create({
   },
   sendButton: {
     // borderWidth: 2,
-    width: "85%",
+
     height: 50,
     borderRadius: 10,
     backgroundColor: "#25CAAC",
