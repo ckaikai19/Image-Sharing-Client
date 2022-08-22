@@ -46,34 +46,45 @@ function Upload({ navigation: { goBack, navigate } }) {
   };
 
   const sendImage = async () => {
+
+    let r = `${(Math.random() + 1).toString(36).substring(2)}_img`;
     const formData = new FormData();
-    formData.append("file", {
-      name: new Date() + "_img",
-      uri: image,
-      type: "image/jpg",
-    });
+    formData.append(
+      "file",
+      {
+        name: r,
+        type: "image/jpeg",
+        uri: image,
+      }
+    )
 
     try {
-      const res = await axios.post("http://10.0.0.2:3001/upload", formData)
-                             .then(res => console.log(res))
-                             .catch(err => console.log(err));
-      // {
-      //   headers: {
-      //     "Content-Type": "multipart/form-data",
-      //   },
-      // }
+      const res = await axios({
+        url: "http://10.0.2.2:3001/upload",
+        method: "POST",
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+        data: formData,
+      })
+        .then((res) => console.log(res))
+        .catch((err) => console.log(err));
+      // let responseJson = await res.json();
+
 
       // const { fileName, filePath } = res.data;
 
       // console.log(fileName);
       // console.log(filePath);
+
+
       return res;
+
 
 
     } catch (err) {
       console.log(err);
     }
-
   };
 
   DropDownPicker.setListMode("SCROLLVIEW");

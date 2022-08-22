@@ -1,10 +1,12 @@
 {
-  "assetId": null,
-  "base64": null,
-  "cancelled": false,
-  "exif": null,
-  "height": 3226,
-  "type": "image",
-  "uri": "file:///data/user/0/host.exp.exponent/cache/ImagePicker/097bd44a-ef89-4d72-b040-2ae3721d1adc.jpeg",
-  "width": 1814
+  "_parts": [
+    [
+      "file",
+      {
+        "name": "Sun Aug 21 2022 11:47:03 GMT-0400 (EDT)__img",
+        "type": "image/jpeg",
+        "uri": "file:///data/user/0/host.exp.exponent/cache/ImagePicker/66971f2e-6174-4f73-bad0-963eceee51d3.jpeg"
+      }
+    ]
+  ]
 }
