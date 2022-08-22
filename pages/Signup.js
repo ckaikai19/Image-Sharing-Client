@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, {useState} from "react";
 import {
   StyleSheet,
   Text,
@@ -15,30 +15,28 @@ import Logo from "../img/logo.svg";
 import { FontAwesome5, SimpleLineIcons, AntDesign } from "@expo/vector-icons";
 import axios from "axios";
 
-function Login({ navigation }) {
+function Signup({ navigation }) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
   async function validate() {
     let inputData = { username, password };
-    try {
-      const res = await axios({
-        url: "http://10.0.2.2:3001/api/users/login",
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        data: JSON.stringify(inputData),
+    const res = await axios({
+      url: "http://10.0.2.2:3001/api/users",
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      data: JSON.stringify(inputData),
+    })
+      .then((res) => {
+        if (res.status === 200) {
+          navigation.navigate("Home");
+        }
       })
-        .then((res) => {
-          if (res.status === 200) {
-            navigation.navigate("Home");
-          }
-        })
-        .catch((err) => console.log(err));
-    } catch (err) {
-      console.log("failed");
-    }
+      .catch((err) => console.log(err));
+
+    // console.log(username)
   }
 
   return (
@@ -47,7 +45,7 @@ function Login({ navigation }) {
         <Background style={styles.bigSvg} />
         <View style={styles.innerContainer}>
           <Logo />
-          <Text style={styles.loginTitle}>Login</Text>
+          <Text style={styles.loginTitle}>Sign up</Text>
           <View style={styles.inputContainer}>
             <TextInput
               onChangeText={(text) => setUsername(text)}
@@ -76,7 +74,7 @@ function Login({ navigation }) {
           </View>
           <TouchableOpacity onPress={validate} style={{ width: "65%" }}>
             <View style={styles.loginButtonContainer}>
-              <Text style={styles.loginText}>Login</Text>
+              <Text style={styles.loginText}>Sign up</Text>
             </View>
           </TouchableOpacity>
           <View style={styles.signupTextContainer}>
@@ -88,9 +86,9 @@ function Login({ navigation }) {
                 marginRight: 10,
               }}
             >
-              Don’t have account?
+              Already have an account?
             </Text>
-            <TouchableOpacity onPress={() => navigation.navigate("Signup")}>
+            <TouchableOpacity onPress={() => navigation.navigate("Login")}>
               <Text
                 style={{
                   color: "#6A74CF",
@@ -99,7 +97,7 @@ function Login({ navigation }) {
                   bottom: 2,
                 }}
               >
-                Sign up
+                Log in
               </Text>
             </TouchableOpacity>
           </View>
@@ -225,4 +223,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Login;
+export default Signup;
