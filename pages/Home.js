@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   StyleSheet,
   Text,
@@ -16,12 +16,32 @@ import { Ionicons } from "@expo/vector-icons";
 import { profilePics } from "../img/profiles/index.js";
 import ResponsiveImageView from "react-native-responsive-image-view";
 import Post from "../components/Post";
+import axios from "axios";
 
 function Home({ navigation }) {
+  const [posts, setPosts] = useState(null);
+  const img = []
+
+  async function getPosts() {
+    const posts = await axios
+      .get("http://10.0.2.2:3001/api/posts")
+      .then((res) => setPosts(res.data))
+      .catch((err) => console.log(err));
+  }
+
+  async function getImages() {
+    const images = await axios.get('http://10.0.2.2:3001/images', {
+        params: {
+          file: 'v9dqqig1en.jpg'
+        }
+    }).then((res) => console.log(res))
+  }
+
+  // console.log(posts)
+  // getImages();
   function toProfile() {
     navigation.navigate("Profile");
   }
-
 
   return (
     <SafeAreaView style={styles.AndroidSafeArea}>

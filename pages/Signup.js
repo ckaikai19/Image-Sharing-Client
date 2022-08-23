@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import {
   StyleSheet,
   Text,
@@ -14,6 +14,7 @@ import BottomBackground from "../img/Vector.svg";
 import Logo from "../img/logo.svg";
 import { FontAwesome5, SimpleLineIcons, AntDesign } from "@expo/vector-icons";
 import axios from "axios";
+import Toast from "react-native-toast-message";
 
 function Signup({ navigation }) {
   const [username, setUsername] = useState("");
@@ -21,22 +22,45 @@ function Signup({ navigation }) {
 
   async function validate() {
     let inputData = { username, password };
-    const res = await axios({
-      url: "http://10.0.2.2:3001/api/users",
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      data: JSON.stringify(inputData),
-    })
-      .then((res) => {
-        if (res.status === 200) {
-          navigation.navigate("Home");
-        }
-      })
-      .catch((err) => console.log(err));
 
-    // console.log(username)
+    if (username.length < 3 || password.length < 3) {
+      // console.log("error");
+      Toast.show({
+        type: "error",
+        text1: "Invaild Input",
+        text2: "Either the username or password is invalid",
+        position: "top",
+      
+      });
+    } else {
+      const res = await axios({
+        url: "http://10.0.2.2:3001/api/users",
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        data: JSON.stringify(inputData),
+      })
+        .then((res) => {
+          if (res.status === 200) {
+            console.log("succsess");
+                  Toast.show({
+                    type: "success",
+                    text1: "Success",
+                    position: "bottom",
+                  });
+            navigation.navigate("Home");
+          }
+        })
+        .catch(() => {
+                Toast.show({
+                  type: "error",
+                  text1: "Invaild Input",
+                  text2: "Either the username or password is invalid",
+                  position: "top",
+                });
+        });
+    }
   }
 
   return (
@@ -62,6 +86,7 @@ function Signup({ navigation }) {
           <View style={styles.inputContainer}>
             <TextInput
               onChangeText={(text) => setPassword(text)}
+              secureTextEntry={true}
               placeholder="Password"
               style={styles.input}
             />

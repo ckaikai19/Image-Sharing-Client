@@ -20,6 +20,8 @@ import * as ImagePicker from "expo-image-picker";
 import axios from "axios";
 
 function Upload({ navigation: { goBack, navigate } }) {
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
   const [image, setImage] = useState(null);
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState(null);
@@ -36,27 +38,33 @@ function Upload({ navigation: { goBack, navigate } }) {
       let result = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: ImagePicker.MediaTypeOptions.All,
         allowsEditing: true,
-        // aspect: [4, 3],
         quality: 1,
       });
+
       setImage(result.uri);
     } catch (err) {
       console.log(err);
     }
   };
 
-  const sendImage = async () => {
+  const sendPost = async () => {
+    const postInfo = {
+      title: "Sharks",
+      description: "Fucking hate sharks",
+      catagoy: "wallpaper",
+    };
 
     let r = `${(Math.random() + 1).toString(36).substring(2)}_img`;
     const formData = new FormData();
-    formData.append(
-      "file",
-      {
-        name: r,
-        type: "image/jpeg",
-        uri: image,
-      }
-    )
+    formData.append("file", {
+      name: r,
+      type: "image/jpeg",
+      uri: image,
+    });
+    formData.append("title", title);
+    formData.append("description", description);
+    formData.append("catagory", value);
+
 
     try {
       const res = await axios({
@@ -69,17 +77,6 @@ function Upload({ navigation: { goBack, navigate } }) {
       })
         .then((res) => console.log(res))
         .catch((err) => console.log(err));
-      // let responseJson = await res.json();
-
-
-      // const { fileName, filePath } = res.data;
-
-      // console.log(fileName);
-      // console.log(filePath);
-
-
-      return res;
-
 
 
     } catch (err) {
@@ -148,7 +145,9 @@ function Upload({ navigation: { goBack, navigate } }) {
             <View style={styles.uploadOuterContainer}>
               <View style={styles.uploadContainer}>
                 <TouchableOpacity onPress={pickImage}>
-                  <Text style={styles.uploadButton}>SELECT FILE</Text>
+                  <Text style={styles.uploadButton}>
+                    {image ? "CHANGE PIC" : "CHOOSE A PIC"}
+                  </Text>
                 </TouchableOpacity>
               </View>
             </View>
@@ -156,12 +155,14 @@ function Upload({ navigation: { goBack, navigate } }) {
               <TextInput
                 style={styles.inputTitle}
                 placeholderTextColor={"white"}
+                onChangeText={(text) => setTitle(text)}
                 placeholder="Add a title..."
               />
             </View>
             <View style={styles.uploadOuterContainer}>
               <TextInput
                 style={styles.inputTitle}
+                onChangeText={(text) => setDescription(text)}
                 placeholderTextColor={"white"}
                 placeholder="Add a description..."
               />
@@ -194,7 +195,7 @@ function Upload({ navigation: { goBack, navigate } }) {
               setItems={setItems}
             />
             <View style={styles.uploadOuterContainer}>
-              <TouchableOpacity style={{ width: "85%" }} onPress={sendImage}>
+              <TouchableOpacity style={{ width: "85%" }} onPress={sendPost}>
                 <View style={styles.sendButton}>
                   <Text style={styles.uploadText}>Upload</Text>
                 </View>

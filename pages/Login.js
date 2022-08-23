@@ -14,6 +14,7 @@ import BottomBackground from "../img/Vector.svg";
 import Logo from "../img/logo.svg";
 import { FontAwesome5, SimpleLineIcons, AntDesign } from "@expo/vector-icons";
 import axios from "axios";
+import Toast from "react-native-toast-message";
 
 function Login({ navigation }) {
   const [username, setUsername] = useState("");
@@ -21,7 +22,15 @@ function Login({ navigation }) {
 
   async function validate() {
     let inputData = { username, password };
-    try {
+
+    if (username.length < 3 || password.length < 3) {
+      Toast.show({
+        type: "error",
+        text1: "Invaild Input",
+        text2: "Either the username or password is invalid",
+        position: "top",
+      });
+    } else {
       const res = await axios({
         url: "http://10.0.2.2:3001/api/users/login",
         method: "POST",
@@ -32,12 +41,24 @@ function Login({ navigation }) {
       })
         .then((res) => {
           if (res.status === 200) {
+            Toast.show({
+              type: "success",
+              text1: "Success",
+              position: "bottom",
+            });
             navigation.navigate("Home");
+            setUsername("");
+            setPassword("");
           }
         })
-        .catch((err) => console.log(err));
-    } catch (err) {
-      console.log("failed");
+        .catch(() => {
+          Toast.show({
+            type: "error",
+            text1: "Invaild Input",
+            text2: "Either the username or password is invalid",
+            position: "top",
+          });
+        });
     }
   }
 
@@ -64,6 +85,7 @@ function Login({ navigation }) {
           <View style={styles.inputContainer}>
             <TextInput
               onChangeText={(text) => setPassword(text)}
+              secureTextEntry={true}
               placeholder="Password"
               style={styles.input}
             />
