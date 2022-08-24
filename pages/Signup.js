@@ -21,7 +21,9 @@ function Signup({ navigation }) {
   const [password, setPassword] = useState("");
 
   async function validate() {
-    let inputData = { username, password };
+
+    let profilePic = `${Math.floor(Math.random() * 22 + 1)}.png`
+    let inputData = { username, password, profilePic };
 
     if (username.length < 3 || password.length < 3) {
       // console.log("error");
@@ -44,21 +46,22 @@ function Signup({ navigation }) {
         .then((res) => {
           if (res.status === 200) {
             console.log("succsess");
-                  Toast.show({
-                    type: "success",
-                    text1: "Success",
-                    position: "bottom",
-                  });
-            navigation.navigate("Home");
+            Toast.show({
+              type: "success",
+              text1: "Success",
+              position: "bottom",
+            });
+            navigation.navigate("Login");
+
           }
         })
         .catch(() => {
-                Toast.show({
-                  type: "error",
-                  text1: "Invaild Input",
-                  text2: "Either the username or password is invalid",
-                  position: "top",
-                });
+                // Toast.show({
+                //   type: "error",
+                //   text1: "Invaild Input",
+                //   text2: "Either the username or password is invalid",
+                //   position: "top",
+                // });
         });
     }
   }

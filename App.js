@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Toast from "react-native-toast-message";
@@ -18,6 +18,7 @@ const Stack = createNativeStackNavigator();
 
 export default function App() {
 
+
   return (
     <NavigationContainer>
       <Stack.Navigator
@@ -27,7 +28,7 @@ export default function App() {
         <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="Signup" component={Signup} />
         <Stack.Screen name="Home" component={Home} />
-        <Stack.Screen name="Details" component={Details} />
+        <Stack.Screen name="Details" component={Details} options={{title: "Post Details"}} />
         <Stack.Screen name="Profile" component={Profile} />
         <Stack.Screen name="Upload" component={Upload} />
       </Stack.Navigator>

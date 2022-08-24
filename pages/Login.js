@@ -20,6 +20,8 @@ function Login({ navigation }) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
+
+
   async function validate() {
     let inputData = { username, password };
 
@@ -46,7 +48,8 @@ function Login({ navigation }) {
               text1: "Success",
               position: "bottom",
             });
-            navigation.navigate("Home");
+            navigation.navigate("Home", {profile: res.data.user});
+            // console.log(res.data.user.profile);
             setUsername("");
             setPassword("");
           }

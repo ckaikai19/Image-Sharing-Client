@@ -10,13 +10,55 @@ import {
   Platform,
   StatusBar,
 } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 import { LinearGradient } from "expo-linear-gradient";
 import { Ionicons, AntDesign } from "@expo/vector-icons";
 import { profilePics } from "../img/profiles/index.js";
 import ResponsiveImageView from "react-native-responsive-image-view";
+import { useRoute } from "@react-navigation/native";
+import Toast from "react-native-toast-message";
+import axios from "axios";
 
-function Details({ navigation: { goBack }  }) {
+function Details({ navigation }) {
+  const [comment, setComment] = useState("");
+
+  const route = useRoute();
+
+  console.log(route.params.data.comments);
+
+  async function sendComment() {
+    if (comment.length < 1) {
+      Toast.show({
+        type: "error",
+        text1: "Invaild Input",
+        text2: "Either in a comment",
+        position: "top",
+      });
+    } else {
+      let commentData = {
+        post_id: route.params.data.id,
+        comment_text: comment,
+      };
+
+      const res = await axios({
+        url: "http://10.0.2.2:3001/api/comments",
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        data: JSON.stringify(commentData),
+      })
+        .then((res) => {
+          Toast.show({
+            type: "success",
+            text1: "Posted!",
+            position: "top",
+          });
+        })
+        .catch((err) => console.log(err));
+    }
+  }
+
   return (
     <SafeAreaView style={styles.AndroidSafeArea}>
       <LinearGradient
@@ -28,7 +70,7 @@ function Details({ navigation: { goBack }  }) {
       >
         <View style={styles.container}>
           <View style={styles.header}>
-            <TouchableOpacity onPress={() => goBack()}>
+            <TouchableOpacity onPress={() => navigation.goBack()}>
               <Ionicons name="ios-chevron-back" style={styles.back} size={27} />
             </TouchableOpacity>
             <Text style={styles.headerTitle}>Details</Text>
@@ -45,9 +87,7 @@ function Details({ navigation: { goBack }  }) {
                   />
                 </View>
                 <View style={styles.shadow}>
-                  <ResponsiveImageView
-                    source={require("../img/posts/wall.jpg")}
-                  >
+                  <ResponsiveImageView source={{ uri: route.params.imageUrl }}>
                     {({ getViewProps, getImageProps }) => (
                       <View {...getViewProps()}>
                         <Image
@@ -62,12 +102,10 @@ function Details({ navigation: { goBack }  }) {
             <View style={styles.descriptionOuterContainer}>
               <View style={styles.descriptionContainer}>
                 <Text style={styles.descriptionTitle}>
-                  Modern Studio Design
+                  {route.params.data.title}
                 </Text>
                 <Text style={styles.descriptionBody}>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                  do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                  Ut enim ad minim veniam, quis nostrud exercitation ullamcoo
+                  {route.params.data.content}
                 </Text>
                 <View style={styles.userContainer}>
                   <Image
@@ -76,7 +114,9 @@ function Details({ navigation: { goBack }  }) {
                     source={profilePics.avatars[5]}
                   />
                   <View style={styles.ownerTextContainer}>
-                    <Text style={styles.ownerText}>Dave Johson</Text>
+                    <Text style={styles.ownerText}>
+                      {route.params.data.user.username}
+                    </Text>
                   </View>
                 </View>
               </View>
@@ -122,11 +162,14 @@ function Details({ navigation: { goBack }  }) {
               <TextInput
                 placeholderTextColor={"white"}
                 style={styles.input}
+                onChangeText={(text) => setComment(text)}
                 placeholder="Write a comment.."
               />
-              <View style={styles.uploadContainer}>
-                <AntDesign name="upcircle" style={styles.upload} size={35} />
-              </View>
+              <TouchableOpacity onPress={sendComment}>
+                <View style={styles.uploadContainer}>
+                  <AntDesign name="upcircle" style={styles.upload} size={35} />
+                </View>
+              </TouchableOpacity>
             </View>
           </View>
         </View>

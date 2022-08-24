@@ -18,8 +18,10 @@ import ResponsiveImageView from "react-native-responsive-image-view";
 import DropDownPicker from "react-native-dropdown-picker";
 import * as ImagePicker from "expo-image-picker";
 import axios from "axios";
+import Toast from "react-native-toast-message";
+import { NativeModules } from "react-native";
 
-function Upload({ navigation: { goBack, navigate } }) {
+function Upload({ navigation: { goBack, navigate }, route }) {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [image, setImage] = useState(null);
@@ -29,8 +31,10 @@ function Upload({ navigation: { goBack, navigate } }) {
     { label: "Sports", value: "sports" },
     { label: "Wallpaper", value: "wallpaper" },
     { label: "Art", value: "art" },
+    { label: "Fitness", value: "fitness" },
+    { label: "Nature", value: "nature" },
     { label: "App Design", value: "app design" },
-    { label: "Decor", value: "Decor" },
+    { label: "Decor", value: "decor" },
   ]);
 
   const pickImage = async () => {
@@ -47,48 +51,64 @@ function Upload({ navigation: { goBack, navigate } }) {
     }
   };
 
+  console.log(route.params.profile.profile);
+
+
   const sendPost = async () => {
-    const postInfo = {
-      title: "Sharks",
-      description: "Fucking hate sharks",
-      catagoy: "wallpaper",
-    };
+    if (
+      title === "" ||
+      description === "" ||
+      value === null ||
+      image === null
+    ) {
+      Toast.show({
+        type: "error",
+        text1: "Invaild Inputs",
+        text2: "Cannot leave text field blank",
+        position: "top",
+      });
+    } else {
+      let r = `${(Math.random() + 1).toString(36).substring(2)}_img`;
+      const formData = new FormData();
+      formData.append("file", {
+        name: r,
+        type: "image/jpeg",
+        uri: image,
+      });
+      formData.append("title", title);
+      formData.append("description", description);
+      formData.append("catagory", value);
+      formData.append("user_id", route.params.profile.id);
 
-    let r = `${(Math.random() + 1).toString(36).substring(2)}_img`;
-    const formData = new FormData();
-    formData.append("file", {
-      name: r,
-      type: "image/jpeg",
-      uri: image,
-    });
-    formData.append("title", title);
-    formData.append("description", description);
-    formData.append("catagory", value);
+      try {
+        const res = await axios({
+          url: "http://10.0.2.2:3001/upload",
+          method: "POST",
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+          data: formData,
+        })
+          .then((res) => {
+            Toast.show({
+              type: "success",
+              text1: "Posted!",
+              position: "top",
+            });
 
-
-    try {
-      const res = await axios({
-        url: "http://10.0.2.2:3001/upload",
-        method: "POST",
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-        data: formData,
-      })
-        .then((res) => console.log(res))
-        .catch((err) => console.log(err));
-
-
-    } catch (err) {
-      console.log(err);
+            // navigate("Profile");
+            // console.log(res);
+            NativeModules.DevSettings.reload();
+          })
+          .catch((err) => console.log(err));
+      } catch (err) {
+        console.log(err);
+      }
     }
   };
 
   DropDownPicker.setListMode("SCROLLVIEW");
 
-  function toProfile() {
-    navigate("Profile");
-  }
 
   return (
     <SafeAreaView style={styles.AndroidSafeArea}>
@@ -101,11 +121,23 @@ function Upload({ navigation: { goBack, navigate } }) {
       >
         <View style={styles.container}>
           <View style={styles.header}>
-            <TouchableOpacity onPress={() => goBack()}>
+            <TouchableOpacity
+              onPress={() =>
+                navigate("Profile", {
+                  profile: route.params.profile,
+                })
+              }
+            >
               <Ionicons name="ios-chevron-back" style={styles.back} size={27} />
             </TouchableOpacity>
             <Text style={styles.headerTitle}>Upload</Text>
-            <TouchableOpacity onPress={toProfile}>
+            <TouchableOpacity
+              onPress={() =>
+                navigate("Profile", {
+                  profile: route.params.profile,
+                })
+              }
+            >
               <MaterialIcons name="cancel" size={32} style={styles.exit} />
             </TouchableOpacity>
           </View>
@@ -135,10 +167,14 @@ function Upload({ navigation: { goBack, navigate } }) {
                 <Image
                   style={styles.owner}
                   resizeMode="contain"
-                  source={profilePics.avatars[2]}
+                  source={{
+                    uri: `http://10.0.2.2:3001/profile/${route.params.profile.profile}`,
+                  }}
                 />
                 <View style={styles.ownerTextContainer}>
-                  <Text style={styles.ownerText}>Dave Johnson</Text>
+                  <Text style={styles.ownerText}>
+                    {route.params.profile.username}
+                  </Text>
                 </View>
               </View>
             </View>

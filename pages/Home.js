@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   StyleSheet,
   Text,
@@ -10,6 +10,7 @@ import {
   Platform,
   StatusBar,
   TouchableOpacity,
+  FlatList,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { Ionicons } from "@expo/vector-icons";
@@ -18,30 +19,25 @@ import ResponsiveImageView from "react-native-responsive-image-view";
 import Post from "../components/Post";
 import axios from "axios";
 
-function Home({ navigation }) {
+function Home({ navigation, route }) {
+  const [catagory, setCatagory] = useState("all");
   const [posts, setPosts] = useState(null);
-  const img = []
 
-  async function getPosts() {
-    const posts = await axios
-      .get("http://10.0.2.2:3001/api/posts")
-      .then((res) => setPosts(res.data))
-      .catch((err) => console.log(err));
-  }
 
-  async function getImages() {
-    const images = await axios.get('http://10.0.2.2:3001/images', {
-        params: {
-          file: 'v9dqqig1en.jpg'
-        }
-    }).then((res) => console.log(res))
-  }
+  useEffect(() => {
+    async function getPosts() {
+      const posts = await axios
+        .get(`http://10.0.2.2:3001/api/posts/${catagory}`)
+        .then((res) => {
+          setPosts(res.data);
+        })
+        .catch(() => console.log("get Post Failed"));
+    }
+    getPosts();
+  }, [catagory]);
 
-  // console.log(posts)
-  // getImages();
-  function toProfile() {
-    navigation.navigate("Profile");
-  }
+  // console.log(route.params.profile.profile);
+
 
   return (
     <SafeAreaView style={styles.AndroidSafeArea}>
@@ -68,56 +64,133 @@ function Home({ navigation }) {
               />
             </View>
             <View style={styles.profileContainer}>
-              <TouchableOpacity onPress={toProfile}>
+              <TouchableOpacity
+                onPress={() =>
+                  navigation.navigate("Profile", {
+                    profile: route.params.profile,
+                  })
+                }
+              >
                 <Image
                   style={styles.profile}
                   resizeMode="contain"
-                  source={profilePics.avatars[20]}
+                  source={{
+                    uri: `http://10.0.2.2:3001/profile/${route.params.profile.profile}`,
+                  }}
                 />
               </TouchableOpacity>
             </View>
           </View>
+
           <ScrollView
-            style={{ marginBottom: 100 }}
+            showsHorizontalScrollIndicator={false}
+            horizontal={true}
+            style={styles.catagorieContainer}
+          >
+            <TouchableOpacity onPress={() => setCatagory("all")}>
+              <View
+                style={
+                  catagory === "all"
+                    ? styles.selectedContainer
+                    : styles.catagories
+                }
+              >
+                <Text style={styles.catagoryText}>All</Text>
+              </View>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => setCatagory("sports")}>
+              <View
+                style={
+                  catagory === "sports"
+                    ? styles.selectedContainer
+                    : styles.catagories
+                }
+              >
+                <Text style={styles.catagoryText}>Sports</Text>
+              </View>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => setCatagory("art")}>
+              <View
+                style={
+                  catagory === "art"
+                    ? styles.selectedContainer
+                    : styles.catagories
+                }
+              >
+                <Text style={styles.catagoryText}>Art</Text>
+              </View>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => setCatagory("fitness")}>
+              <View
+                style={
+                  catagory === "fitness"
+                    ? styles.selectedContainer
+                    : styles.catagories
+                }
+              >
+                <Text style={styles.catagoryText}>Fitness</Text>
+              </View>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => setCatagory("nature")}>
+              <View
+                style={
+                  catagory === "nature"
+                    ? styles.selectedContainer
+                    : styles.catagories
+                }
+              >
+                <Text style={styles.catagoryText}>Nature</Text>
+              </View>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => setCatagory("wallpaper")}>
+              <View
+                style={
+                  catagory === "wallpaper"
+                    ? styles.selectedContainer
+                    : styles.catagories
+                }
+              >
+                <Text style={styles.catagoryText}>Wallpaper</Text>
+              </View>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => setCatagory("decor")}>
+              <View
+                style={
+                  catagory === "decor"
+                    ? styles.selectedContainer
+                    : styles.catagories
+                }
+              >
+                <Text style={styles.catagoryText}>Decor</Text>
+              </View>
+            </TouchableOpacity>
+          </ScrollView>
+          <ScrollView
+            style={{ marginBottom: 150 }}
             showsVerticalScrollIndicator={false}
           >
-            <ScrollView
-              showsHorizontalScrollIndicator={false}
-              horizontal={true}
-              style={styles.catagorieContainer}
-            >
-              <View style={styles.catagories}>
-                <Text style={{ color: "#E9E9E9" }}>Wallpaju0per</Text>
-              </View>
-              <View style={styles.catagories}>
-                <Text style={{ color: "#E9E9E9" }}>Wallpaper</Text>
-              </View>
-              <View style={styles.catagories}>
-                <Text style={{ color: "#E9E9E9" }}>Wallpaper</Text>
-              </View>
-              <View style={styles.catagories}>
-                <Text style={{ color: "#E9E9E9" }}>Wallpaper</Text>
-              </View>
-              <View style={styles.catagories}>
-                <Text style={{ color: "#E9E9E9" }}>Wallpaper</Text>
-              </View>
-            </ScrollView>
             <View style={styles.gridContainer}>
               <View style={styles.gridLeft}>
-                <Post navigation={navigation} />
-                <Post />
-                <Post />
-                <Post />
-                <Post />
-                <Post />
+                {posts ? (
+                  posts
+                    .filter((_, i) => i % 2 === 0)
+                    .map((post) => (
+                      <Post navigation={navigation} key={post.id} data={post} />
+                    ))
+                ) : (
+                  <View></View>
+                )}
               </View>
               <View style={styles.gridRight}>
-                <Post />
-                <Post />
-                <Post />
-                <Post />
-                <Post />
-                <Post />
+                {posts ? (
+                  posts
+                    .filter((_, i) => i % 2 !== 0)
+                    .map((post) => (
+                      <Post navigation={navigation} key={post.id} data={post} />
+                    ))
+                ) : (
+                  <View></View>
+                )}
               </View>
             </View>
           </ScrollView>
@@ -128,6 +201,28 @@ function Home({ navigation }) {
 }
 
 const styles = StyleSheet.create({
+  selectedContainer: {
+    color: "#E9E9E9",
+    padding: 10,
+    paddingLeft: 20,
+    paddingRight: 20,
+    borderRadius: 30,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.1,
+    shadowRadius: 10,
+    elevation: 5,
+    marginTop: 0,
+    marginBottom: 10,
+    marginLeft: 4,
+    marginRight: 4,
+    height: 40,
+    backgroundColor: "#454FAD",
+  },
+  catagoryText: {
+    color: "#E9E9E9",
+    letterSpacing: 0.7,
+  },
   AndroidSafeArea: {
     flex: 1,
     backgroundColor: "#4952A5",
@@ -200,22 +295,26 @@ const styles = StyleSheet.create({
   catagorieContainer: {
     // border: "1px solid orange",
     marginTop: 0,
+    paddingBottom: 15,
   },
 
   catagories: {
     // border: "1px solid orange",
     color: "#E9E9E9",
-    padding: 14,
+    padding: 10,
+    paddingLeft: 20,
+    paddingRight: 20,
     borderRadius: 30,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.1,
     shadowRadius: 10,
     elevation: 5,
-    marginTop: 8,
-    marginBottom: 8,
+    marginTop: 0,
+    marginBottom: 10,
     marginLeft: 4,
     marginRight: 4,
+    height: 40,
     backgroundColor: "#353B78",
   },
 

@@ -1,22 +1,13 @@
-[
-  {
-    "comments": [],
-    "content": "oifhoiwhoiwhiwrwr",
-    "created_at": "2022-08-23T01:29:49.000Z",
-    "id": 2,
-    "image": "9krnboas33h.jpg",
-    "title": "Bro wtf is ithis iowhjoifwf",
-    "user": { "username": "mike" },
-    "user_id": 1
+{
+  "key": "Profile-fuh1TOrZ56Y-a0Osr6-dy",
+  "name": "Profile",
+  "params": {
+    "profile": {
+      "id": 10,
+      "password": "$2b$10$LS/Q3buAUzN9gWZ6rwesmuePcYfj38jI0R7uNB459spRGAqItfaei",
+      "profile": "9.png",
+      "username": "dad"
+    }
   },
-  {
-    "comments": [],
-    "content": "found this cool wallpaperr on whatever",
-    "created_at": "2022-08-23T01:03:58.000Z",
-    "id": 1,
-    "image": "v9dqqig1en.jpg",
-    "title": "cool wallpaper",
-    "user": { "username": "mike" },
-    "user_id": 1
-  }
-]
+  "path": undefined
+}

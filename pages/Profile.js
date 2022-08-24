@@ -16,13 +16,30 @@ import { Ionicons, AntDesign } from "@expo/vector-icons";
 import { profilePics } from "../img/profiles/index.js";
 import ResponsiveImageView from "react-native-responsive-image-view";
 import Post from "../components/Post";
+import axios from "axios";
 
-function Profile({ navigation: { goBack, navigate }  }) {
-    function signout() {
-      navigate("Login");
-    }
 
-    
+function Profile({ navigation: { goBack, navigate }, route }) {
+  async function signout() {
+    const signout = await axios({
+      url: "http://10.0.2.2:3001/api/users/logout",
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((res) => {
+        if (res.status === 204) {
+          navigate("Login");
+        }
+      })
+      .catch(() => console.log("already logged out"));
+
+    // navigate("Login");
+  }
+
+  console.log(route);
+
   return (
     <SafeAreaView style={styles.AndroidSafeArea}>
       <LinearGradient
@@ -48,7 +65,9 @@ function Profile({ navigation: { goBack, navigate }  }) {
                 <Image
                   style={styles.profile}
                   resizeMode="contain"
-                  source={profilePics.avatars[20]}
+                  source={{
+                    uri: `http://10.0.2.2:3001/profile/${route.params.profile.profile}`,
+                  }}
                 />
               </View>
             </View>
@@ -96,20 +115,26 @@ function Profile({ navigation: { goBack, navigate }  }) {
             </View>
             <View style={styles.gridContainer}>
               <View style={styles.gridLeft}>
+                {/* <Post />
                 <Post />
-                <Post />
-                <Post />
+                <Post /> */}
               </View>
               <View style={styles.gridRight}>
+                {/* <Post />
                 <Post />
-                <Post />
-                <Post />
+                <Post /> */}
               </View>
             </View>
             <View></View>
           </ScrollView>
           <View style={styles.addContainer}>
-            <TouchableOpacity onPress={() => navigate("Upload")}>
+            <TouchableOpacity
+              onPress={() =>
+                navigate("Upload", {
+                  profile: route.params.profile,
+                })
+              }
+            >
               <Ionicons name="add-circle" style={styles.add} size={63} />
             </TouchableOpacity>
           </View>
