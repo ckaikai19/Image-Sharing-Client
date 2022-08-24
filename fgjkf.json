@@ -1,13 +1,9 @@
 {
-  "key": "Profile-fuh1TOrZ56Y-a0Osr6-dy",
-  "name": "Profile",
-  "params": {
-    "profile": {
-      "id": 10,
-      "password": "$2b$10$LS/Q3buAUzN9gWZ6rwesmuePcYfj38jI0R7uNB459spRGAqItfaei",
-      "profile": "9.png",
-      "username": "dad"
-    }
-  },
-  "path": undefined
+  "comment_text": "Ytk",
+  "createdAt": "2022-08-24T07:25:00.000Z",
+  "id": 6,
+  "post_id": 9,
+  "updatedAt": "2022-08-24T07:25:00.000Z",
+  "user": { "profile": "9.png", "username": "dad" },
+  "user_id": 10
 }

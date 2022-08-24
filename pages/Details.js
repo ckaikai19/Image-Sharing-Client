@@ -10,7 +10,7 @@ import {
   Platform,
   StatusBar,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { LinearGradient } from "expo-linear-gradient";
 import { Ionicons, AntDesign } from "@expo/vector-icons";
 import { profilePics } from "../img/profiles/index.js";
@@ -19,12 +19,11 @@ import { useRoute } from "@react-navigation/native";
 import Toast from "react-native-toast-message";
 import axios from "axios";
 
-function Details({ navigation }) {
+function Details({ navigation, route }) {
   const [comment, setComment] = useState("");
+  const [allComments, setAllComments] = useState(null);
 
-  const route = useRoute();
-
-  console.log(route.params.data.comments);
+  // console.log(route.params);
 
   async function sendComment() {
     if (comment.length < 1) {
@@ -37,6 +36,7 @@ function Details({ navigation }) {
     } else {
       let commentData = {
         post_id: route.params.data.id,
+        user_id: route.params.profile.id,
         comment_text: comment,
       };
 
@@ -58,6 +58,23 @@ function Details({ navigation }) {
         .catch((err) => console.log(err));
     }
   }
+
+  useEffect(() => {
+    async function getComments() {
+      const res = await axios
+        .get("http://10.0.2.2:3001/api/comments", {
+          params: {
+            post_id: route.params.data.id,
+          },
+        })
+        .then((res) => setAllComments(res.data))
+        .catch((err) => console.log(err));
+    }
+
+    getComments();
+
+    // console.log(route.params.data);
+  }, []);
 
   return (
     <SafeAreaView style={styles.AndroidSafeArea}>
@@ -111,7 +128,9 @@ function Details({ navigation }) {
                   <Image
                     style={styles.owner}
                     resizeMode="contain"
-                    source={profilePics.avatars[5]}
+                    source={{
+                      uri: `http://10.0.2.2:3001/profile/${route.params.data.user.profile}`,
+                    }}
                   />
                   <View style={styles.ownerTextContainer}>
                     <Text style={styles.ownerText}>
@@ -121,41 +140,37 @@ function Details({ navigation }) {
                 </View>
               </View>
             </View>
-            <View style={styles.descriptionOuterContainer}>
-              <View style={styles.descriptionContainer}>
-                <View style={styles.userContainer}>
-                  <Image
-                    style={styles.owner}
-                    resizeMode="contain"
-                    source={profilePics.avatars[14]}
-                  />
-                  <View style={styles.ownerTextContainer}>
-                    <Text style={styles.ownerText}>Dave Johson</Text>
+
+            {allComments ? (
+              allComments.map((comment) => {
+                return (
+                  <View
+                    key={comment.id}
+                    style={styles.descriptionOuterContainer}
+                  >
+                    <View style={styles.descriptionContainer}>
+                      <View style={styles.userContainer}>
+                        <Image
+                          style={styles.owner}
+                          resizeMode="contain"
+                          source={{
+                            uri: `http://10.0.2.2:3001/profile/${comment.user.profile}`,
+                          }}
+                        />
+                        <View style={styles.ownerTextContainer}>
+                          <Text style={styles.ownerText}>
+                            {comment.user.username}
+                          </Text>
+                        </View>
+                      </View>
+                      <Text style={styles.comment}>{comment.comment_text}</Text>
+                    </View>
                   </View>
-                </View>
-                <Text style={styles.comment}>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit
-                </Text>
-              </View>
-            </View>
-            <View style={styles.descriptionOuterContainer}>
-              <View style={styles.descriptionContainer}>
-                <View style={styles.userContainer}>
-                  <Image
-                    style={styles.owner}
-                    resizeMode="contain"
-                    source={profilePics.avatars[14]}
-                  />
-                  <View style={styles.ownerTextContainer}>
-                    <Text style={styles.ownerText}>Dave Johson</Text>
-                  </View>
-                </View>
-                <Text style={styles.comment}>
-                  Lorem ipsum dolor sit amet,6r6 gg g g g consectetur adipiscing
-                  elit
-                </Text>
-              </View>
-            </View>
+                );
+              })
+            ) : (
+              <View></View>
+            )}
           </ScrollView>
           <View style={styles.outerFooterContainer}>
             <View style={styles.footerContainer}>
@@ -202,6 +217,8 @@ const styles = StyleSheet.create({
   outerFooterContainer: {
     flexDirection: "row",
     justifyContent: "center",
+    marginTop: 10
+    // marginTop: 50
   },
   footerContainer: {
     width: "95%",
@@ -294,6 +311,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "center",
   },
+  
   descriptionContainer: {
     width: "87%",
     // borderWidth: 2,

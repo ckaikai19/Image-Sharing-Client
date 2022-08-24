@@ -175,7 +175,7 @@ function Home({ navigation, route }) {
                   posts
                     .filter((_, i) => i % 2 === 0)
                     .map((post) => (
-                      <Post navigation={navigation} key={post.id} data={post} />
+                      <Post navigation={navigation} user={route.params.profile} key={post.id} data={post} />
                     ))
                 ) : (
                   <View></View>
@@ -186,7 +186,7 @@ function Home({ navigation, route }) {
                   posts
                     .filter((_, i) => i % 2 !== 0)
                     .map((post) => (
-                      <Post navigation={navigation} key={post.id} data={post} />
+                      <Post navigation={navigation} user={route.params.profile} key={post.id} data={post} />
                     ))
                 ) : (
                   <View></View>

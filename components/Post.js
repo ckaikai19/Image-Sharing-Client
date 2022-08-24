@@ -6,27 +6,30 @@ import ResponsiveImageView from "react-native-responsive-image-view";
 import axios from "axios";
 import { Video, AVPlaybackStatus } from "expo-av";
 
-
-function Post({ navigation, data }) {
+function Post({ navigation, data, user }) {
   const video = React.useRef(null);
-  const  [imageUrl, setImageUrl] = useState(null);
+  const [imageUrl, setImageUrl] = useState(null);
 
   useEffect(() => {
     async function getImage() {
       const posts = await axios
-        .get(`http://10.0.2.2:3001/image/${data.image}`,)
+        .get(`http://10.0.2.2:3001/image/${data.image}`)
         .then((res) => setImageUrl(res.config.url))
         .catch((err) => console.log(err));
     }
 
     getImage();
-  }, [])
+  }, []);
 
   function toDetails() {
-
-    navigation.navigate("Details", {data: data, imageUrl: imageUrl});
+    navigation.navigate("Details", {
+      profile: user,
+      data: data,
+      imageUrl: imageUrl,
+    });
   }
 
+  // console.log(data)
 
   return (
     <View style={styles.postBox}>
@@ -46,7 +49,9 @@ function Post({ navigation, data }) {
         <Image
           style={styles.owner}
           resizeMode="contain"
-          source={profilePics.avatars[2]}
+          source={{
+            uri: `http://10.0.2.2:3001/profile/${data.user.profile}`,
+          }}
         />
         <View style={styles.ownerTextContainer}>
           <Text style={styles.ownerText}>{data.user.username}</Text>
@@ -57,7 +62,6 @@ function Post({ navigation, data }) {
 }
 
 const styles = StyleSheet.create({
-
   postBox: {
     marginBottom: 15,
   },

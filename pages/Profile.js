@@ -10,7 +10,7 @@ import {
   StatusBar,
   TouchableOpacity,
 } from "react-native";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { LinearGradient } from "expo-linear-gradient";
 import { Ionicons, AntDesign } from "@expo/vector-icons";
 import { profilePics } from "../img/profiles/index.js";
@@ -18,8 +18,9 @@ import ResponsiveImageView from "react-native-responsive-image-view";
 import Post from "../components/Post";
 import axios from "axios";
 
-
-function Profile({ navigation: { goBack, navigate }, route }) {
+function Profile({ navigation, route }) {
+  const [posts, setPosts] = useState(null);
+  
   async function signout() {
     const signout = await axios({
       url: "http://10.0.2.2:3001/api/users/logout",
@@ -30,15 +31,23 @@ function Profile({ navigation: { goBack, navigate }, route }) {
     })
       .then((res) => {
         if (res.status === 204) {
-          navigate("Login");
+          navigation.navigate("Login");
         }
       })
-      .catch(() => console.log("already logged out"));
+      .catch(() => navigation.navigate("Login"));
 
     // navigate("Login");
   }
 
-  console.log(route);
+  useEffect(() => {
+    async function getCreatedPosts() {
+      const posts = await axios
+        .get(`http://10.0.2.2:3001/api/posts/user/${route.params.profile.id}`)
+        .then((res) => setPosts(res.data))
+        .catch(() => console.log("get Post Failed"));
+    }
+    getCreatedPosts();
+  }, []);
 
   return (
     <SafeAreaView style={styles.AndroidSafeArea}>
@@ -51,7 +60,7 @@ function Profile({ navigation: { goBack, navigate }, route }) {
       >
         <View style={styles.container}>
           <View style={styles.header}>
-            <TouchableOpacity onPress={() => goBack()}>
+            <TouchableOpacity onPress={() => navigation.goBack()}>
               <Ionicons name="ios-chevron-back" style={styles.back} size={27} />
             </TouchableOpacity>
             <Text style={styles.headerTitle}>Profile</Text>
@@ -59,70 +68,92 @@ function Profile({ navigation: { goBack, navigate }, route }) {
               <Ionicons name="exit" size={34} style={styles.exit} />
             </TouchableOpacity>
           </View>
+          <View style={styles.imgContainer}>
+            <View style={styles.profileContainer}>
+              <Image
+                style={styles.profile}
+                resizeMode="contain"
+                source={{
+                  uri: `http://10.0.2.2:3001/profile/${route.params.profile.profile}`,
+                }}
+              />
+            </View>
+          </View>
+          <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "center",
+              marginTop: 20,
+            }}
+          >
+            <Text style={styles.profileName}>{route.params.profile.username}</Text>
+          </View>
+          <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "center",
+              marginTop: 10,
+              // borderWidth: 2,
+              paddingBottom: 15,
+              marginBottom: -10,
+            }}
+          >
+            <View style={styles.catagories}>
+              <Text
+                style={{
+                  color: "#E9E9E9",
+                  letterSpacing: 1,
+                  textAlign: "center",
+                }}
+              >
+                Created
+              </Text>
+            </View>
+            <View style={styles.catagories}>
+              <Text
+                style={{
+                  color: "#E9E9E9",
+                  letterSpacing: 1,
+                  textAlign: "center",
+                }}
+              >
+                Saved
+              </Text>
+            </View>
+          </View>
           <ScrollView>
-            <View style={styles.imgContainer}>
-              <View style={styles.profileContainer}>
-                <Image
-                  style={styles.profile}
-                  resizeMode="contain"
-                  source={{
-                    uri: `http://10.0.2.2:3001/profile/${route.params.profile.profile}`,
-                  }}
-                />
-              </View>
-            </View>
-            <View
-              style={{
-                flexDirection: "row",
-                justifyContent: "center",
-                marginTop: 20,
-              }}
-            >
-              <Text style={styles.profileName}>Steve Anderson</Text>
-            </View>
-            <View
-              style={{
-                flexDirection: "row",
-                justifyContent: "center",
-                marginTop: 10,
-                // borderWidth: 2,
-                paddingBottom: 15,
-                marginBottom: -10,
-              }}
-            >
-              <View style={styles.catagories}>
-                <Text
-                  style={{
-                    color: "#E9E9E9",
-                    letterSpacing: 1,
-                    textAlign: "center",
-                  }}
-                >
-                  Created
-                </Text>
-              </View>
-              <View style={styles.catagories}>
-                <Text
-                  style={{
-                    color: "#E9E9E9",
-                    letterSpacing: 1,
-                    textAlign: "center",
-                  }}
-                >
-                  Saved
-                </Text>
-              </View>
-            </View>
             <View style={styles.gridContainer}>
               <View style={styles.gridLeft}>
-                {/* <Post />
-                <Post />
-                <Post /> */}
+                {posts ? (
+                  posts
+                    .filter((_, i) => i % 2 === 0)
+                    .map((post) => (
+                      <Post
+                        navigation={navigation}
+                        user={post.user}
+                        key={post.id}
+                        data={post}
+                      />
+                    ))
+                ) : (
+                  <View></View>
+                )}
               </View>
               <View style={styles.gridRight}>
-                {/* <Post />
-                <Post />
-                <Post /> */}
+                {posts ? (
+                  posts
+                    .filter((_, i) => i % 2 !== 0)
+                    .map((post) => (
+                      <Post
+                        navigation={navigation}
+                        user={post.user}
+                        key={post.id}
+                        data={post}
+                      />
+                    ))
+                ) : (
+                  <View></View>
+                )}
               </View>
             </View>
             <View></View>
@@ -130,7 +161,7 @@ function Profile({ navigation: { goBack, navigate }, route }) {
           <View style={styles.addContainer}>
             <TouchableOpacity
               onPress={() =>
-                navigate("Upload", {
+                navigation.navigate("Upload", {
                   profile: route.params.profile,
                 })
               }
