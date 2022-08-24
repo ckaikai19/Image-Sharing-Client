@@ -1,9 +1,178 @@
-{
-  "comment_text": "Ytk",
-  "createdAt": "2022-08-24T07:25:00.000Z",
-  "id": 6,
-  "post_id": 9,
-  "updatedAt": "2022-08-24T07:25:00.000Z",
-  "user": { "profile": "9.png", "username": "dad" },
-  "user_id": 10
-}
+[
+  {
+    "comments": [],
+    "content": "dfbdfbdfb",
+    "created_at": "2022-08-24T21:38:19.000Z",
+    "id": 17,
+    "image": "z87jz4hqxh.jpg",
+    "title": "fdsbfdzbdfbfdb",
+    "user": {
+      "profile": "22.png",
+      "username": "Steve"
+    },
+    "user_id": 2
+  },
+  {
+    "comments": [],
+    "content": "dvdssdvdsvs",
+    "created_at": "2022-08-24T15:58:42.000Z",
+    "id": 16,
+    "image": "ylchoyp9hw.jpg",
+    "title": "ddssvds",
+    "user": {
+      "profile": "18.png",
+      "username": "fin"
+    },
+    "user_id": 12
+  },
+  {
+    "comments": [],
+    "content": "ffojpjpo",
+    "created_at": "2022-08-24T07:51:17.000Z",
+    "id": 15,
+    "image": "2uu1j5jfbgi.jpg",
+    "title": "snklsnklsvnklvsnklvs",
+    "user": {
+      "profile": "12.png",
+      "username": "mike"
+    },
+    "user_id": 1
+  },
+  {
+    "comments": [],
+    "content": "hjvhjkvjhvj",
+    "created_at": "2022-08-24T07:02:20.000Z",
+    "id": 14,
+    "image": "48iwf1yybw.jpg",
+    "title": "oihoi;hioi",
+    "user": {
+      "profile": "9.png",
+      "username": "dad"
+    },
+    "user_id": 10
+  },
+  {
+    "comments": [],
+    "content": "nlknlknkl",
+    "created_at": "2022-08-24T06:11:28.000Z",
+    "id": 13,
+    "image": "9dhmtjsmj5.jpg",
+    "title": "blokkljblkl",
+    "user": {
+      "profile": "9.png",
+      "username": "dad"
+    },
+    "user_id": 10
+  },
+  {
+    "comments": [],
+    "content": "mklfmefml;e",
+    "created_at": "2022-08-24T05:37:39.000Z",
+    "id": 12,
+    "image": "9ng27hgb2qk.jpg",
+    "title": "fekpo[kpo[epe",
+    "user": {
+      "profile": "22.png",
+      "username": "Steve"
+    },
+    "user_id": 2
+  },
+  {
+    "comments": [
+      [Object
+      ],
+      [Object
+      ],
+      [Object
+      ],
+      [Object
+      ]
+    ],
+    "content": "ihvhiovdhidv",
+    "created_at": "2022-08-24T03:10:56.000Z",
+    "id": 11,
+    "image": "uk042f994h.jpg",
+    "title": "ldeiklvdlvdlvdk",
+    "user": {
+      "profile": "15.png",
+      "username": "lin"
+    },
+    "user_id": 6
+  },
+  {
+    "comments": [
+      [Object
+      ]
+    ],
+    "content": "eggegeg",
+    "created_at": "2022-08-24T03:03:03.000Z",
+    "id": 10,
+    "image": "llameuoxhn.jpg",
+    "title": "eegegregeg",
+    "user": {
+      "profile": "22.png",
+      "username": "Steve"
+    },
+    "user_id": 2
+  },
+  {
+    "comments": [
+      [Object
+      ],
+      [Object
+      ]
+    ],
+    "content": "oijoijjop",
+    "created_at": "2022-08-24T03:00:56.000Z",
+    "id": 9,
+    "image": "k19g1enti7i.jpg",
+    "title": "oiiohihohiohio",
+    "user": {
+      "profile": "9.png",
+      "username": "dad"
+    },
+    "user_id": 10
+  },
+  {
+    "comments": [
+      [Object
+      ]
+    ],
+    "content": "ewfefwefwe",
+    "created_at": "2022-08-24T02:14:59.000Z",
+    "id": 4,
+    "image": "r1xolt0i69.jpg",
+    "title": "fbSFBDFbFD",
+    "user": {
+      "profile": "12.png",
+      "username": "mike"
+    },
+    "user_id": 1
+  },
+  {
+    "comments": [],
+    "content": "huiehieiheiohfioh",
+    "created_at": "2022-08-24T02:12:35.000Z",
+    "id": 3,
+    "image": "qfcuc9lie7j.jpg",
+    "title": "Movie App",
+    "user": {
+      "profile": "8.png",
+      "username": "fam"
+    },
+    "user_id": 5
+  },
+  {
+    "comments": [],
+    "content": "fqfewrfwef",
+    "created_at": "2022-08-23T21:50:24.000Z",
+    "id": 1,
+    "image": "5prclfj7f7i.jpg",
+    "title": "wergtrwgerg",
+    "user": {
+      "profile": "12.png",
+      "username": "mike"
+    },
+    "user_id": 1
+  }
+]

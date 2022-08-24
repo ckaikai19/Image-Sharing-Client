@@ -45,7 +45,7 @@ function Home({ navigation, route }) {
         location={[0.35, 1.05, 0.1]}
         start={{ x: 1, y: 0 }}
         end={{ x: 1, y: 1 }}
-        colors={["#353B78", "#0D0F1D"]}
+        colors={["#353B78", "#2C2345"]}
         style={styles.container}
       >
         <View style={styles.home}>
@@ -175,7 +175,12 @@ function Home({ navigation, route }) {
                   posts
                     .filter((_, i) => i % 2 === 0)
                     .map((post) => (
-                      <Post navigation={navigation} user={route.params.profile} key={post.id} data={post} />
+                      <Post
+                        navigation={navigation}
+                        user={route.params.profile}
+                        key={post.id}
+                        data={post}
+                      />
                     ))
                 ) : (
                   <View></View>
@@ -186,7 +191,12 @@ function Home({ navigation, route }) {
                   posts
                     .filter((_, i) => i % 2 !== 0)
                     .map((post) => (
-                      <Post navigation={navigation} user={route.params.profile} key={post.id} data={post} />
+                      <Post
+                        navigation={navigation}
+                        user={route.params.profile}
+                        key={post.id}
+                        data={post}
+                      />
                     ))
                 ) : (
                   <View></View>

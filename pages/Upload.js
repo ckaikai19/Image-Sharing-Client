@@ -40,8 +40,8 @@ function Upload({ navigation: { goBack, navigate }, route }) {
   const pickImage = async () => {
     try {
       let result = await ImagePicker.launchImageLibraryAsync({
-        mediaTypes: ImagePicker.MediaTypeOptions.All,
-        allowsEditing: true,
+        mediaTypes: "Images",
+        allowsEditing: false,
         quality: 1,
       });
 
@@ -51,7 +51,7 @@ function Upload({ navigation: { goBack, navigate }, route }) {
     }
   };
 
-  console.log(route.params.profile.profile);
+
 
 
   const sendPost = async () => {

@@ -37,13 +37,20 @@ function Post({ navigation, data, user }) {
         <Ionicons name="bookmarks-sharp" size={25} style={styles.bookMark} />
       </View>
       <TouchableOpacity onPress={toDetails}>
-        <ResponsiveImageView source={{ uri: imageUrl }}>
-          {({ getViewProps, getImageProps }) => (
-            <View {...getViewProps()}>
-              <Image {...getImageProps({ style: styles.postImage })} />
-            </View>
-          )}
-        </ResponsiveImageView>
+        {imageUrl ? (
+          <ResponsiveImageView source={{ uri: imageUrl }}>
+            {({ getViewProps, getImageProps }) => (
+              <View {...getViewProps()}>
+                <Image {...getImageProps({ style: styles.postImage })} />
+              </View>
+            )}
+          </ResponsiveImageView>
+        ) : (
+          <Image
+            source={require("../img/placeholder.png")}
+            style={{ width: "100%", height: 230, borderRadius: 7 }}
+          />
+        )}
       </TouchableOpacity>
       <View style={styles.userContainer}>
         <Image
