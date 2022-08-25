@@ -27,7 +27,7 @@ function Home({ navigation, route }) {
   useEffect(() => {
     async function getPosts() {
       const posts = await axios
-        .get(`http://10.0.2.2:3001/api/posts/${catagory}`)
+        .get(`https://imagesharingnativeapp.herokuapp.com/api/posts/${catagory}`)
         .then((res) => {
           setPosts(res.data);
         })
@@ -36,7 +36,6 @@ function Home({ navigation, route }) {
     getPosts();
   }, [catagory]);
 
-  // console.log(route.params.profile.profile);
 
 
   return (
@@ -75,7 +74,7 @@ function Home({ navigation, route }) {
                   style={styles.profile}
                   resizeMode="contain"
                   source={{
-                    uri: `http://10.0.2.2:3001/profile/${route.params.profile.profile}`,
+                    uri: `https://imagesharingnativeapp.herokuapp.com/profile/${route.params.profile.profile}`,
                   }}
                 />
               </TouchableOpacity>

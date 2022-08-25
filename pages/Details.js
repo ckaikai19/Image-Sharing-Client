@@ -23,8 +23,6 @@ function Details({ navigation, route }) {
   const [comment, setComment] = useState("");
   const [allComments, setAllComments] = useState(null);
 
-  // console.log(route.params);
-
   async function sendComment() {
     if (comment.length < 1) {
       Toast.show({
@@ -41,7 +39,7 @@ function Details({ navigation, route }) {
       };
 
       const res = await axios({
-        url: "http://10.0.2.2:3001/api/comments",
+        url: "https://imagesharingnativeapp.herokuapp.com/api/comments",
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -62,7 +60,7 @@ function Details({ navigation, route }) {
   useEffect(() => {
     async function getComments() {
       const res = await axios
-        .get("http://10.0.2.2:3001/api/comments", {
+        .get("https://imagesharingnativeapp.herokuapp.com/api/comments", {
           params: {
             post_id: route.params.data.id,
           },
@@ -73,7 +71,6 @@ function Details({ navigation, route }) {
 
     getComments();
 
-    // console.log(route.params.data);
   }, []);
 
   return (
@@ -129,7 +126,7 @@ function Details({ navigation, route }) {
                     style={styles.owner}
                     resizeMode="contain"
                     source={{
-                      uri: `http://10.0.2.2:3001/profile/${route.params.data.user.profile}`,
+                      uri: `https://imagesharingnativeapp.herokuapp.com/profile/${route.params.data.user.profile}`,
                     }}
                   />
                   <View style={styles.ownerTextContainer}>
@@ -192,6 +189,7 @@ function Details({ navigation, route }) {
     </SafeAreaView>
   );
 }
+
 const styles = StyleSheet.create({
   AndroidSafeArea: {
     flex: 1,

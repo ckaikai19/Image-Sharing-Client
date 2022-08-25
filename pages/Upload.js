@@ -82,7 +82,7 @@ function Upload({ navigation: { goBack, navigate }, route }) {
 
       try {
         const res = await axios({
-          url: "http://10.0.2.2:3001/upload",
+          url: "https://imagesharingnativeapp.herokuapp.com/upload",
           method: "POST",
           headers: {
             "Content-Type": "multipart/form-data",
@@ -96,8 +96,6 @@ function Upload({ navigation: { goBack, navigate }, route }) {
               position: "top",
             });
 
-            // navigate("Profile");
-            // console.log(res);
             NativeModules.DevSettings.reload();
           })
           .catch((err) => console.log(err));
@@ -168,7 +166,7 @@ function Upload({ navigation: { goBack, navigate }, route }) {
                   style={styles.owner}
                   resizeMode="contain"
                   source={{
-                    uri: `http://10.0.2.2:3001/profile/${route.params.profile.profile}`,
+                    uri: `https://imagesharingnativeapp.herokuapp.com/profile/${route.params.profile.profile}`,
                   }}
                 />
                 <View style={styles.ownerTextContainer}>

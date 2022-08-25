@@ -13,8 +13,12 @@ function Post({ navigation, data, user }) {
   useEffect(() => {
     async function getImage() {
       const posts = await axios
-        .get(`http://10.0.2.2:3001/image/${data.image}`)
-        .then((res) => setImageUrl(res.config.url))
+        .get(`https://imagesharingnativeapp.herokuapp.com/image/${data.image}`)
+        
+        .then((res) => {
+          console.log(res.config)
+          setImageUrl(res.config.url);
+        })
         .catch((err) => console.log(err));
     }
 
@@ -57,7 +61,7 @@ function Post({ navigation, data, user }) {
           style={styles.owner}
           resizeMode="contain"
           source={{
-            uri: `http://10.0.2.2:3001/profile/${data.user.profile}`,
+            uri: `https://imagesharingnativeapp.herokuapp.com/profile/${data.user.profile}`,
           }}
         />
         <View style={styles.ownerTextContainer}>

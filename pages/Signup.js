@@ -36,7 +36,7 @@ function Signup({ navigation }) {
       });
     } else {
       const res = await axios({
-        url: "http://10.0.2.2:3001/api/users",
+        url: "https://imagesharingnativeapp.herokuapp.com/api/users",
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -52,16 +52,15 @@ function Signup({ navigation }) {
               position: "bottom",
             });
             navigation.navigate("Login");
-
           }
         })
         .catch(() => {
-                // Toast.show({
-                //   type: "error",
-                //   text1: "Invaild Input",
-                //   text2: "Either the username or password is invalid",
-                //   position: "top",
-                // });
+          // Toast.show({
+          //   type: "error",
+          //   text1: "Invaild Input",
+          //   text2: "Either the username or password is invalid",
+          //   position: "top",
+          // });
         });
     }
   }

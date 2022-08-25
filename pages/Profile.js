@@ -23,7 +23,7 @@ function Profile({ navigation, route }) {
   
   async function signout() {
     const signout = await axios({
-      url: "http://10.0.2.2:3001/api/users/logout",
+      url: "https://imagesharingnativeapp.herokuapp.com/api/users/logout",
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -42,7 +42,9 @@ function Profile({ navigation, route }) {
   useEffect(() => {
     async function getCreatedPosts() {
       const posts = await axios
-        .get(`http://10.0.2.2:3001/api/posts/user/${route.params.profile.id}`)
+        .get(
+          `https://imagesharingnativeapp.herokuapp.com/api/posts/user/${route.params.profile.id}`
+        )
         .then((res) => setPosts(res.data))
         .catch(() => console.log("get Post Failed"));
     }
@@ -74,7 +76,7 @@ function Profile({ navigation, route }) {
                 style={styles.profile}
                 resizeMode="contain"
                 source={{
-                  uri: `http://10.0.2.2:3001/profile/${route.params.profile.profile}`,
+                  uri: `https://imagesharingnativeapp.herokuapp.com/profile/${route.params.profile.profile}`,
                 }}
               />
             </View>
@@ -86,7 +88,9 @@ function Profile({ navigation, route }) {
               marginTop: 20,
             }}
           >
-            <Text style={styles.profileName}>{route.params.profile.username}</Text>
+            <Text style={styles.profileName}>
+              {route.params.profile.username}
+            </Text>
           </View>
           <View
             style={{

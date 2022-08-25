@@ -32,7 +32,7 @@ function Login({ navigation }) {
       });
     } else {
       const res = await axios({
-        url: "http://10.0.2.2:3001/api/users/login",
+        url: "https://imagesharingnativeapp.herokuapp.com/api/users/login",
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -46,10 +46,9 @@ function Login({ navigation }) {
               text1: "Success",
               position: "bottom",
             });
-            navigation.navigate("Home", { profile: res.data.user });
-            // console.log(res.data.user.profile);
             setUsername("");
             setPassword("");
+            navigation.navigate("Home", { profile: res.data.user });
           }
         })
         .catch(() => {
