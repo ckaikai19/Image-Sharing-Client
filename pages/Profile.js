@@ -52,136 +52,143 @@ function Profile({ navigation, route }) {
   }, []);
 
   return (
-    <SafeAreaView style={styles.AndroidSafeArea}>
-      <LinearGradient
-        location={[0.35, 1.05, 0.1]}
-        start={{ x: 1, y: 0 }}
-        end={{ x: 1, y: 1 }}
-        colors={["#353B78", "#0D0F1D"]}
-        style={{ flex: 1 }}
-      >
-        <View style={styles.container}>
-          <View style={styles.header}>
-            <TouchableOpacity onPress={() => navigation.goBack()}>
-              <Ionicons name="ios-chevron-back" style={styles.back} size={27} />
-            </TouchableOpacity>
-            <Text style={styles.headerTitle}>Profile</Text>
-            <TouchableOpacity onPress={signout}>
-              <Ionicons name="exit" size={34} style={styles.exit} />
-            </TouchableOpacity>
-          </View>
-          <View style={styles.imgContainer}>
-            <View style={styles.profileContainer}>
-              <Image
-                style={styles.profile}
-                resizeMode="contain"
-                source={{
-                  uri: `https://imagesharingnativeapp.herokuapp.com/profile/${route.params.profile.profile}`,
-                }}
-              />
+    <View style={{ flex: 1 }}>
+      <SafeAreaView style={{ flex: 0, backgroundColor: "#353B78" }} />
+      <SafeAreaView style={styles.AndroidSafeArea}>
+        <LinearGradient
+          location={[0.35, 1.05, 0.1]}
+          start={{ x: 1, y: 0 }}
+          end={{ x: 1, y: 1 }}
+          colors={["#353B78", "#0D0F1D"]}
+          style={{ flex: 1 }}
+        >
+          <View style={styles.container}>
+            <View style={styles.header}>
+              <TouchableOpacity onPress={() => navigation.goBack()}>
+                <Ionicons
+                  name="ios-chevron-back"
+                  style={styles.back}
+                  size={27}
+                />
+              </TouchableOpacity>
+              <Text style={styles.headerTitle}>Profile</Text>
+              <TouchableOpacity onPress={signout}>
+                <Ionicons name="exit" size={34} style={styles.exit} />
+              </TouchableOpacity>
             </View>
-          </View>
-          <View
-            style={{
-              flexDirection: "row",
-              justifyContent: "center",
-              marginTop: 20,
-            }}
-          >
-            <Text style={styles.profileName}>
-              {route.params.profile.username}
-            </Text>
-          </View>
-          <View
-            style={{
-              flexDirection: "row",
-              justifyContent: "center",
-              marginTop: 10,
-              // borderWidth: 2,
-              paddingBottom: 15,
-              marginBottom: -10,
-            }}
-          >
-            <View style={styles.catagories}>
-              <Text
-                style={{
-                  color: "#E9E9E9",
-                  letterSpacing: 1,
-                  textAlign: "center",
-                }}
-              >
-                Created
-              </Text>
-            </View>
-            <View style={styles.catagories}>
-              <Text
-                style={{
-                  color: "#E9E9E9",
-                  letterSpacing: 1,
-                  textAlign: "center",
-                }}
-              >
-                Saved
-              </Text>
-            </View>
-          </View>
-          <ScrollView>
-            <View style={styles.gridContainer}>
-              <View style={styles.gridLeft}>
-                {posts ? (
-                  posts
-                    .filter((_, i) => i % 2 === 0)
-                    .map((post) => (
-                      <Post
-                        navigation={navigation}
-                        user={post.user}
-                        key={post.id}
-                        data={post}
-                      />
-                    ))
-                ) : (
-                  <View></View>
-                )}
-              </View>
-              <View style={styles.gridRight}>
-                {posts ? (
-                  posts
-                    .filter((_, i) => i % 2 !== 0)
-                    .map((post) => (
-                      <Post
-                        navigation={navigation}
-                        user={post.user}
-                        key={post.id}
-                        data={post}
-                      />
-                    ))
-                ) : (
-                  <View></View>
-                )}
+            <View style={styles.imgContainer}>
+              <View style={styles.profileContainer}>
+                <Image
+                  style={styles.profile}
+                  resizeMode="contain"
+                  source={{
+                    uri: `https://imagesharingnativeapp.herokuapp.com/profile/${route.params.profile.profile}`,
+                  }}
+                />
               </View>
             </View>
-            <View></View>
-          </ScrollView>
-          <View style={styles.addContainer}>
-            <TouchableOpacity
-              onPress={() =>
-                navigation.navigate("Upload", {
-                  profile: route.params.profile,
-                })
-              }
+            <View
+              style={{
+                flexDirection: "row",
+                justifyContent: "center",
+                marginTop: 20,
+              }}
             >
-              <Ionicons name="add-circle" style={styles.add} size={63} />
-            </TouchableOpacity>
+              <Text style={styles.profileName}>
+                {route.params.profile.username}
+              </Text>
+            </View>
+            <View
+              style={{
+                flexDirection: "row",
+                justifyContent: "center",
+                marginTop: 10,
+                // borderWidth: 2,
+                paddingBottom: 15,
+                marginBottom: -10,
+              }}
+            >
+              <View style={styles.catagories}>
+                <Text
+                  style={{
+                    color: "#E9E9E9",
+                    letterSpacing: 1,
+                    textAlign: "center",
+                  }}
+                >
+                  Created
+                </Text>
+              </View>
+              <View style={styles.catagories}>
+                <Text
+                  style={{
+                    color: "#E9E9E9",
+                    letterSpacing: 1,
+                    textAlign: "center",
+                  }}
+                >
+                  Saved
+                </Text>
+              </View>
+            </View>
+            <ScrollView>
+              <View style={styles.gridContainer}>
+                <View style={styles.gridLeft}>
+                  {posts ? (
+                    posts
+                      .filter((_, i) => i % 2 === 0)
+                      .map((post) => (
+                        <Post
+                          navigation={navigation}
+                          user={post.user}
+                          key={post.id}
+                          data={post}
+                        />
+                      ))
+                  ) : (
+                    <View></View>
+                  )}
+                </View>
+                <View style={styles.gridRight}>
+                  {posts ? (
+                    posts
+                      .filter((_, i) => i % 2 !== 0)
+                      .map((post) => (
+                        <Post
+                          navigation={navigation}
+                          user={post.user}
+                          key={post.id}
+                          data={post}
+                        />
+                      ))
+                  ) : (
+                    <View></View>
+                  )}
+                </View>
+              </View>
+              <View></View>
+            </ScrollView>
+            <View style={styles.addContainer}>
+              <TouchableOpacity
+                onPress={() =>
+                  navigation.navigate("Upload", {
+                    profile: route.params.profile,
+                  })
+                }
+              >
+                <Ionicons name="add-circle" style={styles.add} size={63} />
+              </TouchableOpacity>
+            </View>
           </View>
-        </View>
-      </LinearGradient>
-    </SafeAreaView>
+        </LinearGradient>
+      </SafeAreaView>
+    </View>
   );
 }
 const styles = StyleSheet.create({
   AndroidSafeArea: {
     flex: 1,
-    backgroundColor: "#4952A5",
+    backgroundColor: "#0D0F1D",
     paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
   },
   add: {
@@ -273,7 +280,7 @@ const styles = StyleSheet.create({
   },
   header: {
     // borderWidth: 2,
-    marginTop: 15,
+    marginTop: 10,
     flexDirection: "row",
     justifyContent: "space-between",
     marginLeft: 12,

@@ -70,7 +70,6 @@ function Details({ navigation, route }) {
     }
 
     getComments();
-
   }, []);
 
   return (
@@ -101,15 +100,21 @@ function Details({ navigation, route }) {
                   />
                 </View>
                 <View style={styles.shadow}>
-                  <ResponsiveImageView source={{ uri: route.params.imageUrl }}>
-                    {({ getViewProps, getImageProps }) => (
-                      <View {...getViewProps()}>
-                        <Image
-                          {...getImageProps({ style: styles.postImage })}
-                        />
-                      </View>
-                    )}
-                  </ResponsiveImageView>
+                  {route.params.imageUrl ? (
+                    <ResponsiveImageView
+                      source={{ uri: route.params.imageUrl }}
+                    >
+                      {({ getViewProps, getImageProps }) => (
+                        <View {...getViewProps()}>
+                          <Image
+                            {...getImageProps({ style: styles.postImage })}
+                          />
+                        </View>
+                      )}
+                    </ResponsiveImageView>
+                  ) : (
+                    <Text>No Pic</Text>
+                  )}
                 </View>
               </View>
             </View>
@@ -215,7 +220,7 @@ const styles = StyleSheet.create({
   outerFooterContainer: {
     flexDirection: "row",
     justifyContent: "center",
-    marginTop: 10
+    marginTop: 10,
     // marginTop: 50
   },
   footerContainer: {
@@ -309,7 +314,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "center",
   },
-  
+
   descriptionContainer: {
     width: "87%",
     // borderWidth: 2,

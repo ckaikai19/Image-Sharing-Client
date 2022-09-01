@@ -11,6 +11,7 @@ import {
   StatusBar,
   TouchableOpacity,
   FlatList,
+  RefreshControl,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { Ionicons } from "@expo/vector-icons";
@@ -22,190 +23,210 @@ import axios from "axios";
 function Home({ navigation, route }) {
   const [catagory, setCatagory] = useState("all");
   const [posts, setPosts] = useState(null);
-
+  const [refresh, setRefresh] = useState(false);
 
   useEffect(() => {
     async function getPosts() {
       const posts = await axios
-        .get(`https://imagesharingnativeapp.herokuapp.com/api/posts/${catagory}`)
+        .get(
+          `https://imagesharingnativeapp.herokuapp.com/api/posts/${catagory}`
+        )
         .then((res) => {
           setPosts(res.data);
         })
         .catch(() => console.log("get Post Failed"));
     }
+
     getPosts();
   }, [catagory]);
 
-
+  async function getPosts() {
+    setRefresh(true);
+    const posts = await axios
+      .get(`https://imagesharingnativeapp.herokuapp.com/api/posts/${catagory}`)
+      .then((res) => {
+        setPosts(res.data);
+        setRefresh(false);
+      })
+      .catch(() => console.log("get Post Failed"));
+  }
 
   return (
-    <SafeAreaView style={styles.AndroidSafeArea}>
-      <LinearGradient
-        location={[0.35, 1.05, 0.1]}
-        start={{ x: 1, y: 0 }}
-        end={{ x: 1, y: 1 }}
-        colors={["#353B78", "#2C2345"]}
-        style={styles.container}
-      >
-        <View style={styles.home}>
-          <View style={styles.header}>
-            <View style={styles.inputContainer}>
-              <TextInput
-                style={styles.input}
-                placeholderTextColor={"white"}
-                placeholder="Search"
-              />
-              <Ionicons
-                style={styles.searchIcon}
-                name="ios-search"
-                size={23}
-                color="#E9E9E9"
-              />
-            </View>
-            <View style={styles.profileContainer}>
-              <TouchableOpacity
-                onPress={() =>
-                  navigation.navigate("Profile", {
-                    profile: route.params.profile,
-                  })
-                }
-              >
-                <Image
-                  style={styles.profile}
-                  resizeMode="contain"
-                  source={{
-                    uri: `https://imagesharingnativeapp.herokuapp.com/profile/${route.params.profile.profile}`,
-                  }}
+    <View style={{ flex: 1 }}>
+      <SafeAreaView style={{ flex: 0, backgroundColor: "#353B78" }} />
+      <SafeAreaView style={styles.AndroidSafeArea}>
+        <LinearGradient
+          location={[0.35, 1.05, 0.1]}
+          start={{ x: 1, y: 0 }}
+          end={{ x: 1, y: 1 }}
+          colors={["#353B78", "#2C2345"]}
+          style={styles.container}
+        >
+          <View style={styles.home}>
+            <View style={styles.header}>
+              <View style={styles.inputContainer}>
+                <TextInput
+                  style={styles.input}
+                  placeholderTextColor={"white"}
+                  placeholder="Search"
                 />
-              </TouchableOpacity>
+                <Ionicons
+                  style={styles.searchIcon}
+                  name="ios-search"
+                  size={23}
+                  color="#E9E9E9"
+                />
+              </View>
+              <View style={styles.profileContainer}>
+                <TouchableOpacity
+                  onPress={() =>
+                    navigation.navigate("Profile", {
+                      profile: route.params.profile,
+                    })
+                  }
+                >
+                  <Image
+                    style={styles.profile}
+                    resizeMode="contain"
+                    source={{
+                      uri: `https://imagesharingnativeapp.herokuapp.com/profile/${route.params.profile.profile}`,
+                    }}
+                  />
+                </TouchableOpacity>
+              </View>
             </View>
-          </View>
 
-          <ScrollView
-            showsHorizontalScrollIndicator={false}
-            horizontal={true}
-            style={styles.catagorieContainer}
-          >
-            <TouchableOpacity onPress={() => setCatagory("all")}>
-              <View
-                style={
-                  catagory === "all"
-                    ? styles.selectedContainer
-                    : styles.catagories
-                }
-              >
-                <Text style={styles.catagoryText}>All</Text>
+            <ScrollView
+              showsHorizontalScrollIndicator={false}
+              horizontal={true}
+              style={styles.catagorieContainer}
+            >
+              <TouchableOpacity onPress={() => setCatagory("all")}>
+                <View
+                  style={
+                    catagory === "all"
+                      ? styles.selectedContainer
+                      : styles.catagories
+                  }
+                >
+                  <Text style={styles.catagoryText}>All</Text>
+                </View>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => setCatagory("sports")}>
+                <View
+                  style={
+                    catagory === "sports"
+                      ? styles.selectedContainer
+                      : styles.catagories
+                  }
+                >
+                  <Text style={styles.catagoryText}>Sports</Text>
+                </View>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => setCatagory("art")}>
+                <View
+                  style={
+                    catagory === "art"
+                      ? styles.selectedContainer
+                      : styles.catagories
+                  }
+                >
+                  <Text style={styles.catagoryText}>Art</Text>
+                </View>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => setCatagory("fitness")}>
+                <View
+                  style={
+                    catagory === "fitness"
+                      ? styles.selectedContainer
+                      : styles.catagories
+                  }
+                >
+                  <Text style={styles.catagoryText}>Fitness</Text>
+                </View>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => setCatagory("nature")}>
+                <View
+                  style={
+                    catagory === "nature"
+                      ? styles.selectedContainer
+                      : styles.catagories
+                  }
+                >
+                  <Text style={styles.catagoryText}>Nature</Text>
+                </View>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => setCatagory("wallpaper")}>
+                <View
+                  style={
+                    catagory === "wallpaper"
+                      ? styles.selectedContainer
+                      : styles.catagories
+                  }
+                >
+                  <Text style={styles.catagoryText}>Wallpaper</Text>
+                </View>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => setCatagory("decor")}>
+                <View
+                  style={
+                    catagory === "decor"
+                      ? styles.selectedContainer
+                      : styles.catagories
+                  }
+                >
+                  <Text style={styles.catagoryText}>Decor</Text>
+                </View>
+              </TouchableOpacity>
+            </ScrollView>
+            <ScrollView
+              showsVerticalScrollIndicator={false}
+              // refreshControl={
+              //   <RefreshControl
+              //     refreshing={refresh}
+              //     onRefresh={() => getPosts()}
+              //   />
+              // }
+            >
+              <View style={styles.gridContainer}>
+                <View style={styles.gridLeft}>
+                  {posts ? (
+                    posts
+                      .filter((_, i) => i % 2 === 0)
+                      .map((post) => (
+                        <Post
+                          navigation={navigation}
+                          user={route.params.profile}
+                          key={post.id}
+                          data={post}
+                        />
+                      ))
+                  ) : (
+                    <View></View>
+                  )}
+                </View>
+                <View style={styles.gridRight}>
+                  {posts ? (
+                    posts
+                      .filter((_, i) => i % 2 !== 0)
+                      .map((post) => (
+                        <Post
+                          navigation={navigation}
+                          user={route.params.profile}
+                          key={post.id}
+                          data={post}
+                        />
+                      ))
+                  ) : (
+                    <View></View>
+                  )}
+                </View>
               </View>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => setCatagory("sports")}>
-              <View
-                style={
-                  catagory === "sports"
-                    ? styles.selectedContainer
-                    : styles.catagories
-                }
-              >
-                <Text style={styles.catagoryText}>Sports</Text>
-              </View>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => setCatagory("art")}>
-              <View
-                style={
-                  catagory === "art"
-                    ? styles.selectedContainer
-                    : styles.catagories
-                }
-              >
-                <Text style={styles.catagoryText}>Art</Text>
-              </View>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => setCatagory("fitness")}>
-              <View
-                style={
-                  catagory === "fitness"
-                    ? styles.selectedContainer
-                    : styles.catagories
-                }
-              >
-                <Text style={styles.catagoryText}>Fitness</Text>
-              </View>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => setCatagory("nature")}>
-              <View
-                style={
-                  catagory === "nature"
-                    ? styles.selectedContainer
-                    : styles.catagories
-                }
-              >
-                <Text style={styles.catagoryText}>Nature</Text>
-              </View>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => setCatagory("wallpaper")}>
-              <View
-                style={
-                  catagory === "wallpaper"
-                    ? styles.selectedContainer
-                    : styles.catagories
-                }
-              >
-                <Text style={styles.catagoryText}>Wallpaper</Text>
-              </View>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => setCatagory("decor")}>
-              <View
-                style={
-                  catagory === "decor"
-                    ? styles.selectedContainer
-                    : styles.catagories
-                }
-              >
-                <Text style={styles.catagoryText}>Decor</Text>
-              </View>
-            </TouchableOpacity>
-          </ScrollView>
-          <ScrollView
-            style={{ marginBottom: 150 }}
-            showsVerticalScrollIndicator={false}
-          >
-            <View style={styles.gridContainer}>
-              <View style={styles.gridLeft}>
-                {posts ? (
-                  posts
-                    .filter((_, i) => i % 2 === 0)
-                    .map((post) => (
-                      <Post
-                        navigation={navigation}
-                        user={route.params.profile}
-                        key={post.id}
-                        data={post}
-                      />
-                    ))
-                ) : (
-                  <View></View>
-                )}
-              </View>
-              <View style={styles.gridRight}>
-                {posts ? (
-                  posts
-                    .filter((_, i) => i % 2 !== 0)
-                    .map((post) => (
-                      <Post
-                        navigation={navigation}
-                        user={route.params.profile}
-                        key={post.id}
-                        data={post}
-                      />
-                    ))
-                ) : (
-                  <View></View>
-                )}
-              </View>
-            </View>
-          </ScrollView>
-        </View>
-      </LinearGradient>
-    </SafeAreaView>
+            </ScrollView>
+          </View>
+        </LinearGradient>
+      </SafeAreaView>
+    </View>
   );
 }
 
@@ -234,7 +255,7 @@ const styles = StyleSheet.create({
   },
   AndroidSafeArea: {
     flex: 1,
-    backgroundColor: "#4952A5",
+    backgroundColor: "#2C2345",
     paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
   },
   container: {
@@ -252,14 +273,15 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     marginLeft: 22,
     marginRight: 22,
-    marginTop: 15,
+    marginTop: 4,
+    marginBottom: 8,
   },
 
   inputContainer: {
     // border: "2px solid pink",
     // outlineStyle: 'none',
     // height: 50,
-    width: 255,
+    // width: 255,
     position: "relative",
     top: 8,
   },
@@ -268,7 +290,7 @@ const styles = StyleSheet.create({
     // outlineStyle: 'none',
     backgroundColor: "#454FAD",
     height: 40,
-    width: 225,
+    width: 295,
     borderRadius: 4,
     paddingLeft: 40,
     paddingRight: 16,
@@ -289,8 +311,8 @@ const styles = StyleSheet.create({
     borderRadius: 100,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.8,
-    shadowRadius: 20,
+    shadowOpacity: 0.35,
+    shadowRadius: 10,
     elevation: 5,
   },
 

@@ -236,6 +236,7 @@ const styles = StyleSheet.create({
     left: 0,
     // right: 156,
     bottom: 0,
+    marginTop: -15
     // zIndex: 10,
     // marginTop: 20,
     // marginBottom: 20,

@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Image, TouchableOpacity } from "react-native";
+import { StyleSheet, Text, View, Image, TouchableOpacity,  } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import React, { useEffect, useState } from "react";
 import { profilePics } from "../img/profiles/index.js";
@@ -12,11 +12,11 @@ function Post({ navigation, data, user }) {
 
   useEffect(() => {
     async function getImage() {
+      // console.log(data.image);
+      //https://imagesharingnativeapp.herokuapp.com/image/6hvnyn87qa.jpg
       const posts = await axios
         .get(`https://imagesharingnativeapp.herokuapp.com/image/${data.image}`)
-        
         .then((res) => {
-          console.log(res.config)
           setImageUrl(res.config.url);
         })
         .catch((err) => console.log(err));
@@ -33,7 +33,6 @@ function Post({ navigation, data, user }) {
     });
   }
 
-  // console.log(data)
 
   return (
     <View style={styles.postBox}>
