@@ -28,9 +28,7 @@ function Home({ navigation, route }) {
   useEffect(() => {
     async function getPosts() {
       const posts = await axios
-        .get(
-          `https://imagesharingnativeapp.herokuapp.com/api/posts/${catagory}`
-        )
+        .get(`https://imagesharingback.herokuapp.com/api/posts/${catagory}`)
         .then((res) => {
           setPosts(res.data);
         })
@@ -43,7 +41,7 @@ function Home({ navigation, route }) {
   async function getPosts() {
     setRefresh(true);
     const posts = await axios
-      .get(`https://imagesharingnativeapp.herokuapp.com/api/posts/${catagory}`)
+      .get(`https://imagesharingback.herokuapp.com/api/posts/${catagory}`)
       .then((res) => {
         setPosts(res.data);
         setRefresh(false);
@@ -89,7 +87,7 @@ function Home({ navigation, route }) {
                     style={styles.profile}
                     resizeMode="contain"
                     source={{
-                      uri: `https://imagesharingnativeapp.herokuapp.com/profile/${route.params.profile.profile}`,
+                      uri: `https://imagesharingback.herokuapp.com/profile/${route.params.profile.profile}`,
                     }}
                   />
                 </TouchableOpacity>
@@ -103,7 +101,7 @@ function Home({ navigation, route }) {
             >
               <TouchableOpacity onPress={() => setCatagory("all")}>
                 <View
-                  style={
+                  style= {
                     catagory === "all"
                       ? styles.selectedContainer
                       : styles.catagories
@@ -352,7 +350,9 @@ const styles = StyleSheet.create({
   gridContainer: {
     // border: "1px solid orange",
     margin: 5,
-    marginTop: 10,
+    marginTop: 5,
+    marginBottom: 80,
+    paddingBottom: 60,
     flexDirection: "row",
     justifyContent: "center",
   },

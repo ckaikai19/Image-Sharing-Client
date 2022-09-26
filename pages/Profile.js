@@ -23,7 +23,7 @@ function Profile({ navigation, route }) {
   
   async function signout() {
     const signout = await axios({
-      url: "https://imagesharingnativeapp.herokuapp.com/api/users/logout",
+      url: "https://imagesharingback.herokuapp.com/api/users/logout",
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -43,7 +43,7 @@ function Profile({ navigation, route }) {
     async function getCreatedPosts() {
       const posts = await axios
         .get(
-          `https://imagesharingnativeapp.herokuapp.com/api/posts/user/${route.params.profile.id}`
+          `https://imagesharingback.herokuapp.com/api/posts/user/${route.params.profile.id}`
         )
         .then((res) => setPosts(res.data))
         .catch(() => console.log("get Post Failed"));
@@ -82,7 +82,7 @@ function Profile({ navigation, route }) {
                   style={styles.profile}
                   resizeMode="contain"
                   source={{
-                    uri: `https://imagesharingnativeapp.herokuapp.com/profile/${route.params.profile.profile}`,
+                    uri: `https://imagesharingback.herokuapp.com/profile/${route.params.profile.profile}`,
                   }}
                 />
               </View>

@@ -36,7 +36,7 @@ function Signup({ navigation }) {
       });
     } else {
       const res = await axios({
-        url: "https://imagesharingnativeapp.herokuapp.com/api/users",
+        url: "https://imagesharingback.herokuapp.com/api/users",
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -208,6 +208,7 @@ const styles = StyleSheet.create({
     paddingLeft: 40,
     paddingRight: 5,
     paddingBottom: 7,
+    height: 40,
   },
 
   loginTitle: {
@@ -239,6 +240,7 @@ const styles = StyleSheet.create({
     left: 0,
     // right: 156,
     bottom: 0,
+    marginTop: -15,
     // zIndex: 10,
     // marginTop: 20,
     // marginBottom: 20,

@@ -10,14 +10,16 @@ function Post({ navigation, data, user }) {
   const video = React.useRef(null);
   const [imageUrl, setImageUrl] = useState(null);
 
+
   useEffect(() => {
     async function getImage() {
       // console.log(data.image);
       //https://imagesharingnativeapp.herokuapp.com/image/6hvnyn87qa.jpg
       const posts = await axios
-        .get(`https://imagesharingnativeapp.herokuapp.com/image/${data.image}`)
+        .get(`https://imagesharingback.herokuapp.com/image/${data.image}`)
         .then((res) => {
-          setImageUrl(res.config.url);
+          setImageUrl(res.data);
+          // console.log(res)
         })
         .catch((err) => console.log(err));
     }
@@ -60,11 +62,11 @@ function Post({ navigation, data, user }) {
           style={styles.owner}
           resizeMode="contain"
           source={{
-            uri: `https://imagesharingnativeapp.herokuapp.com/profile/${data.user.profile}`,
+            uri: `https://imagesharingback.herokuapp.com/profile/${data.user.profile}`,
           }}
         />
         <View style={styles.ownerTextContainer}>
-          <Text style={styles.ownerText}>{data.user.username}</Text>
+          <Text style={styles.ownerText}>{data.title}</Text>
         </View>
       </View>
     </View>
@@ -113,18 +115,19 @@ const styles = StyleSheet.create({
   },
 
   ownerTextContainer: {
-    width: 100,
+    width: "75%",
     marginLeft: 8,
   },
 
   ownerText: {
     color: "white",
     position: "relative",
-    top: 9,
+    // top: 9,
     fontSize: 14,
     opacity: 0.9,
     fontWeight: "300",
     letterSpacing: 0.65,
+    // borderWidth: 2
   },
 });
 
