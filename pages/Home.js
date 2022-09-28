@@ -179,12 +179,12 @@ function Home({ navigation, route }) {
             </ScrollView>
             <ScrollView
               showsVerticalScrollIndicator={false}
-              // refreshControl={
-              //   <RefreshControl
-              //     refreshing={refresh}
-              //     onRefresh={() => getPosts()}
-              //   />
-              // }
+              refreshControl={
+                <RefreshControl
+                  refreshing={refresh}
+                  onRefresh={() => getPosts()}
+                />
+              }
             >
               <View style={styles.gridContainer}>
                 <View style={styles.gridLeft}>

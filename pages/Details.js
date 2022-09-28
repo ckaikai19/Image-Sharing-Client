@@ -9,6 +9,7 @@ import {
   SafeAreaView,
   Platform,
   StatusBar,
+  RefreshControl,
 } from "react-native";
 import React, { useState, useEffect } from "react";
 import { LinearGradient } from "expo-linear-gradient";
@@ -22,6 +23,8 @@ import axios from "axios";
 function Details({ navigation, route }) {
   const [comment, setComment] = useState("");
   const [allComments, setAllComments] = useState(null);
+  const [refresh, setRefresh] = useState(false);
+
 
   async function sendComment() {
     if (comment.length < 1) {
@@ -55,6 +58,17 @@ function Details({ navigation, route }) {
         })
         .catch((err) => console.log(err));
     }
+  }
+
+  async function getComments() {
+    const res = await axios
+      .get("https://imagesharingback.herokuapp.com/api/comments", {
+        params: {
+          post_id: route.params.data.id,
+        },
+      })
+      .then((res) => setAllComments(res.data))
+      .catch((err) => console.log(err));
   }
 
   useEffect(() => {
@@ -95,7 +109,15 @@ function Details({ navigation, route }) {
               <Text style={styles.headerTitle}>Details</Text>
               <Ionicons name="bookmark-sharp" style={styles.back} size={34} />
             </View>
-            <ScrollView showsVerticalScrollIndicator={false}>
+            <ScrollView
+              showsVerticalScrollIndicator={false}
+              refreshControl={
+                <RefreshControl
+                  refreshing={refresh}
+                  onRefresh={() => getComments()}
+                />
+              }
+            >
               <View style={styles.outerImgContainer}>
                 <View style={styles.imgContainer}>
                   <View style={styles.addContainer}>
@@ -221,7 +243,6 @@ const styles = StyleSheet.create({
     // bottom: 46,
     marginTop: -25,
     // borderWidth: 2
-
   },
 
   upload: {
@@ -235,7 +256,7 @@ const styles = StyleSheet.create({
     position: "relative",
     zIndex: 100,
     top: 40,
-    left: 3
+    left: 3,
   },
 
   outerFooterContainer: {
@@ -268,7 +289,7 @@ const styles = StyleSheet.create({
     paddingBottom: 15,
     letterSpacing: 0.9,
     zIndex: -1,
-    position: "relative"
+    position: "relative",
   },
 
   comment: {
