@@ -3,13 +3,9 @@
 
 ## Description
 A full-stack personal project made to explore the use of mobile-first technology. This app is a hybrid between Pinterest and Instagram and allows users the ability to upload pictures thanks to the use of a javascript library called Multer. The pictures are then stored in AWS S3 Bucket, which is then received on the React Native frontend to later be displayed.
- Home Feed             |  Profile Page
-:---------------------:|:-------------------------:
-![](./img/screenshot/home.png)  |  ![](./img/screenshot/profile.png)
-
- Login             |  Sign up
-:-------------------------:|:-------------------------:
-![](./img/screenshot/login.png)  |  ![](./img/screenshot/sign.png)
+ Home Feed             |  Profile Page             |  Sign up                    
+:---------------------:|:-------------------------:|:-------------------------:
+![](./img/screenshot/home.png)  |  ![](./img/screenshot/profile.png) | ![](./img/screenshot/sign.png) 
 
 
 
@@ -22,6 +18,19 @@ A full-stack personal project made to explore the use of mobile-first technology
 | [![JQuery][JQuery.com]][JQuery-url]        | ![Laravel][Laravel.com]     | 
 | [![JQuery][linkedin-url]][linkedin-url]       | [![Bootstrap][Bootstrap.com]][Bootstrap-url]         | 
 | [![JQuery][contributors-url]][linkedin-url]       | [![JQuery][Vue-url]][linkedin-url]         | 
+
+
+## Run project in development
+
+- Setting up the development environment: https://reactnative.dev/docs/environment-setup.
+
+- Install dependencies: `yarn install` (or `npm install`).
+
+- Run on Android: `yarn android` (or `npm run android`).
+
+- Run on iOS: `yarn ios` (or `npm run ios`).
+
+- Run on both Android & iOS: `yarn mobile` (or `npm run mobile`).
 
 
 
